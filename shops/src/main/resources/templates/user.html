@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+ <br/>
+<p>Users</p>
+<table>
+    <thead>
+        <tr>
+            <th>id</th>
+            <td>Name</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="tenant : ${tenants}">
+            <td th:text="${tenant.id}">1</td>
+            <td th:text="${tenant.name}">Resk</td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

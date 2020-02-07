@@ -1,0 +1,18 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost/master
+    password: master
+    username: master
+  security:
+    oauth2:
+      client:
+        provider:
+          shop:
+            issuer-uri: http://localhost:8080/auth/realms/tenant
+            user-name-attribute: preferred_username
+        registration:
+          shop:
+            client-id: shop_service
+            client-secret: 3b7792e9-6e3a-4b52-a565-5dfc076e5782
+server:
+  port: 8082

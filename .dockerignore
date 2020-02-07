@@ -1,0 +1,7 @@
+target/
+bin/
+build/
+.gitignore
+docker-compose.yaml
+README.md
+LICENSE

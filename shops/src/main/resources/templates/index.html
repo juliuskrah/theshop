@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+Welcome [[ ${#authentication.name} ]] <br/> <a th:href="@{/user}">user</a>
+
+<form th:method="post" th:action="@{/logout}">
+    <button type="submit">logout</button>
+</form>
+</body>
+</html>
