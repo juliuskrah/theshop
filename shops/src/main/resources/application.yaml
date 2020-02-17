@@ -16,3 +16,11 @@ spring:
             client-secret: 3b7792e9-6e3a-4b52-a565-5dfc076e5782
 server:
   port: 8082
+  forward-headers-strategy: framework
+
+shop:
+  domain-pattern: ([a-zA-Z0-9]*).theshop.com
+  
+logging:
+  level:
+    com.juliuskrah.shop: debug

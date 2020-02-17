@@ -11,7 +11,12 @@ function create_user_and_database() {
 	    CREATE DATABASE $database;
 	    GRANT ALL PRIVILEGES ON DATABASE $database TO $database;
 		\c $database;
-		CREATE SCHEMA IF NOT EXISTS AUTHORIZATION $database;
+		CREATE SCHEMA IF NOT EXISTS basket AUTHORIZATION $database;
+		CREATE SCHEMA IF NOT EXISTS catalogs AUTHORIZATION $database;
+		CREATE SCHEMA IF NOT EXISTS locations AUTHORIZATION $database;
+		CREATE SCHEMA IF NOT EXISTS marketing AUTHORIZATION $database;
+		CREATE SCHEMA IF NOT EXISTS orders AUTHORIZATION $database;
+		CREATE SCHEMA IF NOT EXISTS payment AUTHORIZATION $database;
         CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 	EOSQL
 }
