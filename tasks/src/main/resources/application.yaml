@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: TheShop-Task
+  datasource:
+    url: jdbc:postgresql://localhost/master?currentSchema=tenants
+    username: master
+    password: master
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+logging:
+  level:
+    org.springframework.cloud.task: DEBUG

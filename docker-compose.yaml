@@ -21,7 +21,7 @@ services:
       DB_ADDR: postgres
       DB_DATABASE: identity
       DB_USER: identity
-      DB_SCHEMA: identity
+      DB_SCHEMA: public
       DB_PASSWORD: identity
       KEYCLOAK_USER: julius
       KEYCLOAK_PASSWORD: julius123
