@@ -4,6 +4,20 @@ TheShop is a very basic Multi-Tenant e-shop demonstrating how to build a polyglo
 This sample application demonstrates how to build a multi-tenant with the tenancy handled
 at the Identity Server (Openid-Connect) and Database layer.
 
+## Setting Up
+
+You'd need to create the following DNS entries in your `/etc/hosts` file:
+
+- [x] Windows: `C:\Windows\System32\drivers\etc\hosts`
+- [x] Linux:   `/etc/hosts`
+
+> You must have `Administrator` or `sudo` privileges to edit this file
+
+- 127.0.0.1       theshop.com
+- 127.0.0.1       dulcet.theshop.com
+- 127.0.0.1       aparel.theshop.com
+- 127.0.0.1       resk.theshop.com
+
 ## Database Multi-tenancy
 
 At the database layer, multi-tenancy can be handled in one of three ways:
