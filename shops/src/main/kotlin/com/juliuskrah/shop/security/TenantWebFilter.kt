@@ -1,19 +1,28 @@
 package com.juliuskrah.shop.security
 
 import com.juliuskrah.shop.ApplicationProperties
+import com.juliuskrah.shop.tenancy.TenantResolver
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
+import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern
 
 /**
  * Filter to add a lookupKey for the connectionFactory.
  */
 @Component
-class TenantWebFilter(val properties: ApplicationProperties) : WebFilter {
+class TenantWebFilter(
+        val properties: ApplicationProperties,
+        val tenantResolvers: Collection<TenantResolver>
+) : WebFilter {
+    /**
+     * A cache that stores the host as key and tenant as value
+     */
+    private val tenantsCache = ConcurrentHashMap<String, String> ()
     companion object {
         lateinit var routingKey: String
         private val log = LoggerFactory.getLogger(TenantWebFilter::class.java)
@@ -36,6 +45,9 @@ class TenantWebFilter(val properties: ApplicationProperties) : WebFilter {
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         val url = exchange.request.uri
         log.debug("request URI : {}", url)
+        // log.debug("1 {}", tenantResolvers.toList()[0])
+        // log.debug("2 {}", tenantResolvers.toList()[1])
+        // log.debug("3 {}", tenantResolvers.toList()[2])
         val tenant: String = toTenant(url.host)
         return chain.filter(exchange)
                 .subscriberContext { ctx ->
@@ -50,6 +62,7 @@ class TenantWebFilter(val properties: ApplicationProperties) : WebFilter {
      * Default tenant will return ''
      */
     fun toTenant(host: String): String {
+        // tenantResolvers
         val pattern = Pattern.compile(properties.domainPattern)
         val matcher = pattern.matcher(host)
         var tenant = ""

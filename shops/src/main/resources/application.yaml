@@ -13,13 +13,14 @@ spring:
         registration:
           shop:
             client-id: shop_service
-            client-secret: 3b7792e9-6e3a-4b52-a565-5dfc076e5782
+            client-secret: 19cbe823-5579-4f12-9319-2dc24e718d2a
 server:
   port: 8082
   forward-headers-strategy: framework
 
 shop:
   domain-pattern: ([a-zA-Z0-9]*).theshop.com
+  # tenant-cookie-key: COOKIE_KEYS
   
 logging:
   level:
