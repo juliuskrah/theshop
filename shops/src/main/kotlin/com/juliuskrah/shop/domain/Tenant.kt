@@ -6,6 +6,4 @@ import java.util.*
 @Table
 data class Tenant(
         val id: UUID?,
-        val name: String?) {
-
-}
+        val name: String?)

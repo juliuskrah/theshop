@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component
 import java.util.regex.Pattern
 
 @Component
-class DomainTenantResolver(val properties: ApplicationProperties) : TenantResolver, Ordered {
+class DomainTenantResolverStrategy(val properties: ApplicationProperties) : TenantResolverStrategy, Ordered {
 
-    override fun resolveTenant(request: ServerHttpRequest): CharSequence {
+    override fun resolveTenant(request: ServerHttpRequest): CharSequence? {
         return toTenant(request.uri.host)
     }
 
@@ -21,10 +21,12 @@ class DomainTenantResolver(val properties: ApplicationProperties) : TenantResolv
      * Extracts tenant identifier from host. If the pattern cannot match, then it is the default tenant.
      * Default tenant will return ''
      */
-    private fun toTenant(host: String): String {
+    private fun toTenant(host: String): String? {
+        if (properties.baseDomain == host) return ""
+
         val pattern = Pattern.compile(properties.domainPattern)
         val matcher = pattern.matcher(host)
-        var tenant = ""
+        var tenant: String? = null
         while (matcher.find()) {
             tenant = matcher.group(1)
         }

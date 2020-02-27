@@ -7,9 +7,9 @@ import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.stereotype.Component
 
 @Component
-class HttpHeaderTenantResolver(val properties: ApplicationProperties) : TenantResolver, Ordered {
+class HttpHeaderTenantResolverStrategy(val properties: ApplicationProperties) : TenantResolverStrategy, Ordered {
 
-    override fun resolveTenant(request: ServerHttpRequest): CharSequence {
+    override fun resolveTenant(request: ServerHttpRequest): CharSequence? {
         val headers = request.headers
         return toTenant(headers)
     }
@@ -18,9 +18,9 @@ class HttpHeaderTenantResolver(val properties: ApplicationProperties) : TenantRe
         return 202
     }
 
-    fun toTenant(headers: HttpHeaders): String {
+    fun toTenant(headers: HttpHeaders): String? {
         val headerValue = headers[properties.tenantHeaderKey]
-        if(headerValue?.size!! > 0) return headerValue[0]
-        return ""
+        if (!headerValue.isNullOrEmpty()) return headerValue[0]
+        return null
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest
 /**
  * Implementations of this class resolves the current tenant
  */
-interface TenantResolver {
+interface TenantResolverStrategy {
     /**
      * Resolves the tenant from the request. Three implementations are provided out of the box.
      * <ol>
@@ -25,5 +25,5 @@ interface TenantResolver {
      * </ol>
      * The first successful resolver 'wins'
      */
-    fun resolveTenant(request: ServerHttpRequest): CharSequence
+    fun resolveTenant(request: ServerHttpRequest): CharSequence?
 }

@@ -1,30 +1,32 @@
 package com.juliuskrah.shop.security
 
-import com.juliuskrah.shop.ApplicationProperties
-import com.juliuskrah.shop.tenancy.TenantResolver
+import com.juliuskrah.shop.repository.TenantNotFoundException
+import com.juliuskrah.shop.tenancy.TenantResolverStrategy
 import org.slf4j.LoggerFactory
+import org.springframework.data.r2dbc.connectionfactory.lookup.MapConnectionFactoryLookup
+import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 import java.util.concurrent.ConcurrentHashMap
-import java.util.regex.Pattern
 
 /**
  * Filter to add a lookupKey for the connectionFactory.
  */
 @Component
 class TenantWebFilter(
-        val properties: ApplicationProperties,
-        val tenantResolvers: Collection<TenantResolver>
+        val tenantResolverStrategies: Collection<TenantResolverStrategy>
 ) : WebFilter {
     /**
      * A cache that stores the host as key and tenant as value
      */
-    private val tenantsCache = ConcurrentHashMap<String, String> ()
+    private val tenantsCache = ConcurrentHashMap<String, String>()
+
     companion object {
         lateinit var routingKey: String
+        val lookup: MapConnectionFactoryLookup = MapConnectionFactoryLookup()
         private val log = LoggerFactory.getLogger(TenantWebFilter::class.java)
     }
 
@@ -45,10 +47,7 @@ class TenantWebFilter(
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         val url = exchange.request.uri
         log.debug("request URI : {}", url)
-        // log.debug("1 {}", tenantResolvers.toList()[0])
-        // log.debug("2 {}", tenantResolvers.toList()[1])
-        // log.debug("3 {}", tenantResolvers.toList()[2])
-        val tenant: String = toTenant(url.host)
+        val tenant = tenantsCache.computeIfAbsent(url.host) { toTenant(exchange.request) as String }
         return chain.filter(exchange)
                 .subscriberContext { ctx ->
                     if (tenant != "")
@@ -58,17 +57,14 @@ class TenantWebFilter(
     }
 
     /**
-     * Extracts tenant identifier from host. If the pattern cannot match, then it is the default tenant.
-     * Default tenant will return ''
+     * Runs through all registered tenantResolverStrategies until the first strategy that can resolve
+     * the tenant. Once resolved, the tenant is cached
      */
-    fun toTenant(host: String): String {
-        // tenantResolvers
-        val pattern = Pattern.compile(properties.domainPattern)
-        val matcher = pattern.matcher(host)
-        var tenant = ""
-        while (matcher.find()) {
-            tenant = matcher.group(1)
+    fun toTenant(request: ServerHttpRequest): CharSequence {
+        for (tenantResolverStrategy: TenantResolverStrategy in this.tenantResolverStrategies) {
+            val tenant = tenantResolverStrategy.resolveTenant(request)
+            if (tenant != null) return tenant
         }
-        return tenant
+        throw TenantNotFoundException("Tenant cannot be resolved by any of the available configured strategies")
     }
 }

@@ -9,10 +9,10 @@ import org.springframework.web.reactive.result.view.Rendering
 class HomeController(private val tenantService: TenantService) {
 
     @GetMapping(path = ["/"])
-    fun welcome(): Rendering = Rendering.view("index").build();
+    fun welcome(): Rendering = Rendering.view("index").build()
 
     @GetMapping(path = ["/user"])
     fun tenants(): Rendering = Rendering.view("user")
             .modelAttribute("tenants", tenantService.find())
-            .build();
+            .build()
 }

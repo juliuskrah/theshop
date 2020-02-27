@@ -9,6 +9,10 @@ import javax.validation.constraints.NotBlank
 class ApplicationProperties {
     @NotBlank
     lateinit var domainPattern: String
+    @NotBlank
+    lateinit var baseDomain: String
+    @NotBlank
+    lateinit var domainTemplate: String
     var tenantHeaderKey: String = "X-TENANT-ID"
     var tenantCookieKey: String = "TENANT-ID"
 }

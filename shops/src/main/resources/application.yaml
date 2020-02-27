@@ -19,8 +19,9 @@ server:
   forward-headers-strategy: framework
 
 shop:
-  domain-pattern: ([a-zA-Z0-9]*).theshop.com
-  # tenant-cookie-key: COOKIE_KEYS
+  domain-pattern: '([a-zA-Z0-9]*).${shop.base-domain}'
+  domain-template: '{tenant}.${shop.base-domain}'
+  base-domain: theshop.com
   
 logging:
   level:

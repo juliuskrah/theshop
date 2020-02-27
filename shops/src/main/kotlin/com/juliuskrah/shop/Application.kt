@@ -9,8 +9,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @SpringBootApplication
 class Application
 
-	fun main(args: Array<String>) {
-		runApplication<Application>(*args) {
-			setBannerMode(Banner.Mode.OFF)
-		}
-	}
+fun main(args: Array<String>) {
+    runApplication<Application>(*args) {
+        setBannerMode(Banner.Mode.OFF)
+    }
+}
