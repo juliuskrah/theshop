@@ -4,7 +4,6 @@ import com.juliuskrah.shop.repository.TenantNotFoundException
 import com.juliuskrah.shop.tenancy.TenantResolverStrategy
 import org.slf4j.LoggerFactory
 import org.springframework.data.r2dbc.connectionfactory.lookup.MapConnectionFactoryLookup
-import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
@@ -47,8 +46,13 @@ class TenantWebFilter(
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         val url = exchange.request.uri
         log.debug("request URI : {}", url)
-        val tenant = tenantsCache.computeIfAbsent(url.host) { toTenant(exchange.request) as String }
-        return chain.filter(exchange)
+        var transformedExchange = exchange.mutate().build()
+        val tenant = tenantsCache.computeIfAbsent(url.host) {
+            val pair = toPair(exchange)
+            transformedExchange = pair.second
+            pair.first as String
+        }
+        return chain.filter(transformedExchange)
                 .subscriberContext { ctx ->
                     if (tenant != "")
                         ctx.put(routingKey, tenant)
@@ -60,10 +64,10 @@ class TenantWebFilter(
      * Runs through all registered tenantResolverStrategies until the first strategy that can resolve
      * the tenant. Once resolved, the tenant is cached
      */
-    fun toTenant(request: ServerHttpRequest): CharSequence {
+    fun toPair(exchange: ServerWebExchange): Pair<CharSequence?, ServerWebExchange> {
         for (tenantResolverStrategy: TenantResolverStrategy in this.tenantResolverStrategies) {
-            val tenant = tenantResolverStrategy.resolveTenant(request)
-            if (tenant != null) return tenant
+            val pair = tenantResolverStrategy.resolveTenant(exchange)
+            if (pair.first != null) return pair
         }
         throw TenantNotFoundException("Tenant cannot be resolved by any of the available configured strategies")
     }
