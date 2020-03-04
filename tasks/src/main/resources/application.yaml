@@ -1,6 +1,6 @@
 spring:
   application:
-    name: TheShop-Task
+    name: TheShop Task
   datasource:
     url: jdbc:postgresql://localhost/master?currentSchema=tenants,public
     username: master
@@ -9,6 +9,9 @@ spring:
     drop-first: true
     change-log: classpath:db/changelog/db.changelog-master.xml
     contexts: master,dev
+  cloud:
+    task:
+      closecontext-enabled: false
     # default-schema: tenants # Creates liquibase tables in `tenants` schema and _cloud task_ tables in `pulbic` schema
 logging:
   level:

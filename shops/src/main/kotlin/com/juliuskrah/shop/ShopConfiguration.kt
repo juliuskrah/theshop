@@ -104,7 +104,7 @@ class ShopConfiguration : ApplicationContextAware {
     fun securityFilter(http: ServerHttpSecurity): SecurityWebFilterChain {
         val logoutHandler = OidcClientInitiatedServerLogoutSuccessHandler(clients)
         // todo logout uri per tenant
-        logoutHandler.setPostLogoutRedirectUri(URI.create("http://localhost:8082"))
+        logoutHandler.setPostLogoutRedirectUri(URI.create("http://theshop.com"))
         // todo auth entryPoint per tenant
         val authenticationEntryPoint = RedirectServerAuthenticationEntryPoint("/oauth2/authorization/shop")
         http.authorizeExchange {

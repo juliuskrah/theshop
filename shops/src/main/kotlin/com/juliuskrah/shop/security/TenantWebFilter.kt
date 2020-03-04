@@ -2,7 +2,7 @@ package com.juliuskrah.shop.security
 
 import com.juliuskrah.shop.repository.TenantNotFoundException
 import com.juliuskrah.shop.tenancy.TenantResolverStrategy
-import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.data.r2dbc.connectionfactory.lookup.MapConnectionFactoryLookup
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
@@ -10,13 +10,14 @@ import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 import java.util.concurrent.ConcurrentHashMap
+import java.util.stream.Collectors.toList
 
 /**
  * Filter to add a lookupKey for the connectionFactory.
  */
 @Component
 class TenantWebFilter(
-        val tenantResolverStrategies: Collection<TenantResolverStrategy>
+        val tenantResolverStrategies: ObjectProvider<TenantResolverStrategy>
 ) : WebFilter {
     /**
      * A cache that stores the host as key and tenant as value
@@ -26,7 +27,6 @@ class TenantWebFilter(
     companion object {
         lateinit var routingKey: String
         val lookup: MapConnectionFactoryLookup = MapConnectionFactoryLookup()
-        private val log = LoggerFactory.getLogger(TenantWebFilter::class.java)
     }
 
     init {
@@ -45,7 +45,6 @@ class TenantWebFilter(
      */
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         val url = exchange.request.uri
-        log.debug("request URI : {}", url)
         var transformedExchange = exchange.mutate().build()
         val tenant = tenantsCache.computeIfAbsent(url.host) {
             val pair = toPair(exchange)
@@ -65,7 +64,8 @@ class TenantWebFilter(
      * the tenant. Once resolved, the tenant is cached
      */
     fun toPair(exchange: ServerWebExchange): Pair<CharSequence?, ServerWebExchange> {
-        for (tenantResolverStrategy: TenantResolverStrategy in this.tenantResolverStrategies) {
+        val tenantResolverStrategies = this.tenantResolverStrategies.orderedStream().collect(toList())
+        for (tenantResolverStrategy: TenantResolverStrategy in tenantResolverStrategies) {
             val pair = tenantResolverStrategy.resolveTenant(exchange)
             if (pair.first != null) return pair
         }

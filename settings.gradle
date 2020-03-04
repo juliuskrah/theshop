@@ -13,5 +13,6 @@ pluginManagement {
 }
 
 include 'shops'
+include 'tasks'
 
 rootProject.name = 'the-shop'
