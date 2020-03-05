@@ -8,7 +8,8 @@ spring:
   liquibase:
     drop-first: true
     change-log: classpath:db/changelog/db.changelog-master.xml
-    contexts: master,dev
+    contexts: master
+    labels: catalogs OR (master and dev)
   cloud:
     task:
       closecontext-enabled: false
@@ -16,4 +17,5 @@ spring:
 logging:
   level:
     org.springframework.cloud.task: DEBUG
+    com.juliuskrah.task: DEBUG
     liquibase.executor.jvm.JdbcExecutor: DEBUG
