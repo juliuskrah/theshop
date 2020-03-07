@@ -6,8 +6,10 @@ spring:
     username: master
     password: master
   liquibase:
+    enabled: false
     drop-first: true
     change-log: classpath:db/changelog/db.changelog-master.xml
+    default-schema: tenants
     contexts: master
     labels: catalogs OR (master and dev)
   cloud:

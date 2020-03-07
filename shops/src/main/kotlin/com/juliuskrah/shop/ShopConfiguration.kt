@@ -19,8 +19,6 @@ import org.springframework.scheduling.annotation.Scheduled
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.util.*
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 @Configuration
 @EnableScheduling
@@ -74,19 +72,6 @@ class ShopConfiguration : ApplicationContextAware {
                 .option(DATABASE, database)
                 .option(Option.valueOf<String>("schema"), "catalogs")
                 .build())
-    }
-
-    fun replace(variable: String): String {
-        val namesPattern: Pattern = Pattern.compile("\\{([^/]+?)\\}")
-        val matcher: Matcher = namesPattern.matcher("{name}.theshop.com")
-        val sb = StringBuffer()
-
-        if (matcher.find()) {
-            matcher.appendReplacement(sb, variable)
-        }
-        matcher.appendTail(sb)
-        println(sb.toString())
-        return sb.toString()
     }
 
     @Scheduled(initialDelay = 60000, fixedRate = 600000)
