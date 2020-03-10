@@ -11,4 +11,6 @@
 	<include
 		file="db/changelog/changesets/20200219_tenancy_initial.xml"
 		relativeToChangelogFile="false" />
+	<include file="db/changelog/changesets/20200309_catalogs.xml"
+		relativeToChangelogFile="false" />
 </databaseChangeLog>

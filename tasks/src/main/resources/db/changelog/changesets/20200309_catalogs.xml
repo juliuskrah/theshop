@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd ">
+
+	<property name="uuid_function" value="uuid_generate_v4()"
+		dbms="postgresql" />
+	<property name="timestamp_function"
+		value="current_timestamp()" dbms="postgresql" />
+	<property name="timestamp" value="TIMESTAMPTZ"
+		dbms="postgresql" />
+
+	<changeSet id="202003092120" author="Julius Krah"
+		context="catalogs">
+		<createTable tableName="catalog_type">
+			<column name="id" type="UUID"
+				defaultValueComputed="${uuid_function}">
+				<constraints primaryKey="true"
+					primaryKeyName="catalog_type_id_pk" />
+			</column>
+			<column name="type" remarks="Type of catalog"
+				type="VARCHAR(100)">
+				<constraints unique="true"
+					uniqueConstraintName="catalog_type_unq" />
+			</column>
+		</createTable>
+		<createTable tableName="catalog_brand">
+			<column name="id" type="UUID"
+				defaultValueComputed="${uuid_function}">
+				<constraints primaryKey="true"
+					primaryKeyName="catalog_brand_id_pk" />
+			</column>
+			<column name="brand" remarks="Brand of catalog"
+				type="VARCHAR(100)">
+				<constraints unique="true"
+					uniqueConstraintName="catalog_brand_unq" />
+			</column>
+		</createTable>
+	</changeSet>
+</databaseChangeLog>
