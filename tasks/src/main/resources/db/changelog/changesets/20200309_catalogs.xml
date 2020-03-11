@@ -14,6 +14,8 @@
 		value="current_timestamp()" dbms="postgresql" />
 	<property name="timestamp" value="TIMESTAMPTZ"
 		dbms="postgresql" />
+	<property name="money" value="DECIMAL(13,2)" dbms="postgresql" />
+	<property name="number" value="INTEGER" dbms="postgresql" />
 
 	<changeSet id="202003092120" author="Julius Krah"
 		context="catalogs">
@@ -41,5 +43,69 @@
 					uniqueConstraintName="catalog_brand_unq" />
 			</column>
 		</createTable>
+		<createTable tableName="catalog_item">
+			<column name="id" type="UUID"
+				defaultValueComputed="${uuid_function}">
+				<constraints primaryKey="true"
+					primaryKeyName="catalog_id_pk" />
+			</column>
+			<column name="name" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="description" type="TEXT" />
+			<column name="price" type="${money}">
+				<constraints nullable="false" />
+			</column>
+			<column name="picture_file_name" type="TEXT" />
+			<column name="catalog_type_id" type="UUID">
+				<constraints nullable=" false" />
+			</column>
+			<column name="catalog_brand_id" type="UUID">
+				<constraints nullable=" false" />
+			</column>
+			<column name="available_stock" type="${number}"
+				defaultValueNumeric="0" remarks="Quantity in stock">
+				<constraints nullable="false" />
+			</column>
+			<column name="restock_threshold" type="${number}"
+				defaultValueNumeric="0"
+				remarks="Available stock at which we should reorder">
+				<constraints nullable="false" />
+			</column>
+			<column name="max_stock_threshold" type="${number}"
+				defaultValueNumeric="0"
+				remarks="Maximum number of units that can be in-stock at any time (due to physical/logistical constraints in warehouses)">
+				<constraints nullable="false" />
+			</column>
+			<column name="on_reorder" type="BOOLEAN"
+				defaultValueBoolean="false" remarks="True if the item is on reorder">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet id="202003111439" author="Julius Krah"
+		context="catalogs">
+		<addForeignKeyConstraint
+			constraintName="catalog_item_catalog_brand_id_fk"
+			referencedTableName="catalog_brand"
+			baseColumnNames="catalog_brand_id" baseTableName="catalog_item"
+			referencedColumnNames="id" onDelete="RESTRICT" onUpdate="CASCADE" />
+		<addForeignKeyConstraint
+			constraintName="catalog_item_catalog_type_id_fk"
+			referencedTableName="catalog_type" baseColumnNames="catalog_type_id"
+			baseTableName="catalog_item" referencedColumnNames="id"
+			onDelete="RESTRICT" onUpdate="CASCADE" />
+		<createIndex tableName="catalog_item"
+			indexName="catalog_item_catalog_type_id_idx">
+			<column name="catalog_type_id" />
+		</createIndex>
+		<createIndex tableName="catalog_item"
+			indexName="catalog_item_catalog_brand_id_idx">
+			<column name="catalog_brand_id" />
+		</createIndex>
+		<createIndex tableName="catalog_item"
+			indexName="catalog_name_idx">
+			<column name="name" descending="false"></column>
+		</createIndex>
 	</changeSet>
 </databaseChangeLog>

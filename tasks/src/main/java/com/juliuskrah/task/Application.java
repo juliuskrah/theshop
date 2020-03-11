@@ -34,7 +34,7 @@ public class Application {
 		return (args) -> System.out.println("args " + Arrays.toString(args));
 	}
 
-	@Bean
+	//@Bean
 	MultiTenantSpringLiquibase liquibase(DataSource dataSource) {
 		var liquibase = new MultiTenantSpringLiquibase();
 		liquibase.setSchemas(TenantUtilities.SERVICES);

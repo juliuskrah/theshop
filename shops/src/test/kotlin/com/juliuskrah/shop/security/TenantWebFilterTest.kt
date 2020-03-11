@@ -3,6 +3,7 @@ package com.juliuskrah.shop.security
 import com.juliuskrah.shop.tenancy.TenantResolverStrategy
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
@@ -13,6 +14,7 @@ import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilterChain
 import java.util.concurrent.ConcurrentHashMap
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TenantWebFilterTest {
     @Mock
     private lateinit var tenantResolverStrategy: ObjectProvider<TenantResolverStrategy>

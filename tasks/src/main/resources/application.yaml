@@ -6,7 +6,7 @@ spring:
     username: master
     password: master
   liquibase:
-    enabled: false
+    enabled: true
     drop-first: true
     change-log: classpath:db/changelog/db.changelog-master.xml
     default-schema: tenants
