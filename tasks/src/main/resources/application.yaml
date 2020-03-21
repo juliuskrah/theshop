@@ -11,7 +11,7 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.xml
     default-schema: tenants
     contexts: master
-    labels: catalogs OR (master and dev)
+    labels: master and dev
   cloud:
     task:
       closecontext-enabled: false

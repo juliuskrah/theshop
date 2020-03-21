@@ -13,7 +13,7 @@ spring:
         registration:
           shop:
             client-id: shop_service
-            client-secret: 19cbe823-5579-4f12-9319-2dc24e718d2a
+            client-secret: a956b994-9137-4278-880d-3ccffb4234c9
 server:
   port: 8082
   forward-headers-strategy: framework
@@ -22,7 +22,8 @@ shop:
   domain-pattern: '([a-zA-Z0-9]*).${shop.base-domain}'
   domain-template: '{tenant}.${shop.base-domain}'
   base-domain: theshop.com
-  
+  database-host: localhost
+
 logging:
   level:
     com.juliuskrah.shop: debug

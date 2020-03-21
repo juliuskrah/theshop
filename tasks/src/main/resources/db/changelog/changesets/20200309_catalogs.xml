@@ -49,7 +49,7 @@
 				<constraints primaryKey="true"
 					primaryKeyName="catalog_id_pk" />
 			</column>
-			<column name="name" type="VARCHAR(50)">
+			<column name="name" type="VARCHAR(100)">
 				<constraints nullable="false" />
 			</column>
 			<column name="description" type="TEXT" />
@@ -107,5 +107,41 @@
 			indexName="catalog_name_idx">
 			<column name="name" descending="false"></column>
 		</createIndex>
+	</changeSet>
+	<changeSet id="202003201224" author="Julius Krah"
+		context="catalogs">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="master">select current_database()
+			</sqlCheck>
+		</preConditions>
+		<createTable tableName="tenant">
+			<column name="id" type="UUID"
+				defaultValueComputed="${uuid_function}">
+				<constraints primaryKey="true"
+					primaryKeyName="tenant_id_pk" />
+			</column>
+			<column name="name" type="VARCHAR(60)">
+				<constraints unique="true" nullable="false"
+					uniqueConstraintName="tenant_name_unq" />
+			</column>
+			<column name="database_host_name" type="VARCHAR(100)"
+				remarks="Host name or IP address">
+				<constraints nullable="true" />
+			</column>
+			<column name="database_port" type="${number}"
+				defaultValueNumeric="5432">
+				<constraints nullable="false" />
+			</column>
+			<column name="database_username" type="VARCHAR(60)"
+				remarks="If not specified, use tenant name" />
+			<column name="database_password" type="VARCHAR(60)">
+				<constraints nullable="false" />
+			</column>
+			<column name="database_name" type="VARCHAR(60)"
+				remarks="If not specified, tenant name is used" />
+		</createTable>
+		<loadData tableName="tenant"
+			file="db/changelog/data/catalogs_tenant.csv"
+			usePreparedStatements="true" relativeToChangelogFile="false" />
 	</changeSet>
 </databaseChangeLog>

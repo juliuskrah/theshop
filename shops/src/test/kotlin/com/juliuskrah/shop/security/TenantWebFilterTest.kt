@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 import org.springframework.beans.factory.ObjectProvider
@@ -18,8 +17,10 @@ import java.util.concurrent.ConcurrentHashMap
 class TenantWebFilterTest {
     @Mock
     private lateinit var tenantResolverStrategy: ObjectProvider<TenantResolverStrategy>
+
     @Mock
     private lateinit var tenantsCache: ConcurrentHashMap<String, String>
+
     @InjectMocks
     private val webFilter: TenantWebFilter = TenantWebFilter(tenantResolverStrategy)
 

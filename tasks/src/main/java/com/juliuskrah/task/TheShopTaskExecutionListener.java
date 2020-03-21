@@ -1,5 +1,9 @@
 package com.juliuskrah.task;
 
+import static com.juliuskrah.task.TenantUtilities.JNDI_BASE;
+import static com.juliuskrah.task.TenantUtilities.JNDI_TEMPLATE;
+import static com.juliuskrah.task.TenantUtilities.resolveTemplate;
+
 import java.util.List;
 
 import javax.naming.InitialContext;
@@ -14,6 +18,7 @@ import org.springframework.cloud.task.repository.TaskExecution;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import liquibase.exception.LiquibaseException;
@@ -44,18 +49,19 @@ public class TheShopTaskExecutionListener implements TaskExecutionListener, Reso
 			context.createSubcontext("java:");
 			context.createSubcontext("java:comp");
 			context.createSubcontext("java:comp/env");
-			context.createSubcontext(TenantUtilities.JNDI_BASE);
+			context.createSubcontext(JNDI_BASE);
 
 			for (var tenant : tenants) {
 				var jndiUrl = TenantUtilities.resolveTemplate(tenant.getName(), TenantUtilities.JNDI_TEMPLATE);
 				var dataSource = createDataSource(tenant);
 				context.bind(jndiUrl, dataSource);
 			}
-			
+			context.bind(resolveTemplate("master", JNDI_TEMPLATE), ((JdbcTemplate) jdbcTemplate).getDataSource());
+
 			for (var service : TenantUtilities.SERVICES) {
 				initializeDatabases(service);
 			}
-			
+
 			log.debug("tenants found {}", tenants.size());
 		} catch (NamingException e) {
 			log.warn("Cannot create remote registry", e);

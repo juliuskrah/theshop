@@ -28,10 +28,10 @@ fun main(args: Array<String>) {
                         // todo auth entryPoint per tenant
                         val authenticationEntryPoint = RedirectServerAuthenticationEntryPoint("/oauth2/authorization/shop")
                         http.authorizeExchange {
-                            it.anyExchange().authenticated()
-                        }.logout {
-                            it.logoutSuccessHandler(logoutHandler)
-                        }.oauth2Login(Customizer.withDefaults())
+                                    it.anyExchange().authenticated()
+                                }.logout {
+                                    it.logoutSuccessHandler(logoutHandler)
+                                }.oauth2Login(Customizer.withDefaults())
                                 .exceptionHandling {
                                     it.authenticationEntryPoint(authenticationEntryPoint)
                                 }
