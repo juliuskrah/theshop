@@ -43,3 +43,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+### NodeJs ###
+/node_modules/

@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../public/css/shops.css" />
     <title>Home</title>
 </head>
+
 <body>
-Welcome [[ ${#authentication.name} ]] <br/>
-<!--/*-->
-<a th:href="${(#mvc.url('HC#tenants')).build()}">user</a>
-<!--*/-->
-<a th:href="@{/catalog/items}">Catalogs</a>
-<form th:action="@{/logout}" th:method="post">
-    <button type="submit">logout</button>
-</form>
+    <h1 class="text-4xl font-bold text-center text-blue-500">Hello World!</h1>
 </body>
+
 </html>
