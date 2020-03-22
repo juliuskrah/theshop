@@ -11,7 +11,7 @@ Welcome [[ ${#authentication.name} ]] <br/>
 <!--/*-->
 <a th:href="${(#mvc.url('HC#tenants')).build()}">user</a>
 <!--*/-->
-<a th:href="@{/user}">user</a>
+<a th:href="@{/catalog/items}">Catalogs</a>
 <form th:action="@{/logout}" th:method="post">
     <button type="submit">logout</button>
 </form>

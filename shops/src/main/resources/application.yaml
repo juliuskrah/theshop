@@ -3,6 +3,9 @@ spring:
     url: r2dbc:postgresql://localhost/master
     password: master
     username: master
+    properties:
+      schema: catalogs
+      statement_timeout: 10
   security:
     oauth2:
       client:

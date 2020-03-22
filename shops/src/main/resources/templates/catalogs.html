@@ -17,9 +17,9 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="tenant : ${tenants}">
-        <td th:text="${tenant.id}">1</td>
-        <td th:text="${tenant.name}">Resk</td>
+    <tr th:each="catalog : ${catalog_items}">
+        <td th:text="${catalog.id}">1</td>
+        <td th:text="${catalog.name}">Resk</td>
     </tr>
     </tbody>
 </table>
