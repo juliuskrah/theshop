@@ -17,9 +17,9 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="catalog : ${catalog_items}">
-        <td th:text="${catalog.id}">1</td>
-        <td th:text="${catalog.name}">Resk</td>
+    <tr data-th-each="catalog : ${catalog_items}">
+        <td data-th-text="${catalog.id}">1</td>
+        <td data-th-text="${catalog.name}">Resk</td>
     </tr>
     </tbody>
 </table>

@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../public/css/shops.css" />
+    <link rel="stylesheet" href="../public/css/shops.css" data-th-href="@{/css/shops.css}" />
     <title>Home</title>
 </head>
-
-<body class="bg-gray-100">
-    <div class="px-8 py-12">
-        <img class="h-10" src="../public/img/logo.svg" alt="Workcation">
-        <img class="mt-6 shadow-xl rounded-lg" src="../public/img/beach-work.jpg" alt="Woman chilling on beach">
-        <h1 class="mt-6 text-2xl font-bold text-gray-900">You can work from anywhere. Take advantage of it.</h1>
-    </div>
+<body>
+Welcome [[ ${#authentication.name} ]] <br/>
+<!--/*-->
+<a data-th-href="${(#mvc.url('HC#catalogs')).build()}">user</a>
+<!--*/-->
+<a data-th-href="@{/catalog/items}">Catalogs</a>
+<form data-th-action="@{/logout}" data-th-method="post">
+    <button class="border-red-400 border rounded-sm hover:bg-red-700" type="submit">logout</button>
+</form>
 </body>
-
 </html>
