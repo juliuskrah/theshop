@@ -1,22 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../public/css/shops.css" data-th-href="@{/css/shops.css}" />
+    <link rel="stylesheet" href="../public/dist/css/shops.css" data-th-href="@{/dist/css/shops.css}" />
     <title>Home</title>
 </head>
-<body>
-Welcome [[ ${#authentication.name} ]] <br/>
-<!--/*-->
-<a data-th-href="${(#mvc.url('HC#catalogs')).build()}">user</a>
-<!--*/-->
-<a data-th-href="@{/catalog/items}">Catalogs</a>
-<form data-th-action="@{/logout}" data-th-method="post">
-    <button class="border-red-400 border rounded-sm hover:bg-red-700" type="submit">logout</button>
-</form>
+
+<body class="bg-pink-100">
+    <header class="mt-5 mx-5 flex flex-row flex-wrap w-auto">
+        <div class="h-24 w-1/2" onclick="hello()">
+            <button type="button"
+                class="h-full w-full text-red-100 bg-red-300 hover:text-gray-100 hover:bg-red-200 focus:outline-none focus:border-red-700 border border-red-400 rounded-tl-lg">Catalogs</button>
+        </div>
+        <div class="h-24 w-1/2">
+            <button type="button"
+                class="h-full w-full text-red-100 bg-red-300 hover:text-gray-100 hover:bg-red-200 focus:outline-none focus:border-red-700 border border-red-400 rounded-tr-lg">Orders</button>
+        </div>
+        <div class="h-24 w-1/2">
+            <button type="button"
+                class="h-full w-full text-red-100 bg-red-300 hover:text-gray-100 hover:bg-red-200 focus:outline-none focus:border-red-700 border border-red-400 rounded-bl-lg">Payments</button>
+        </div>
+        <div class="h-24 w-1/2">
+            <button type="button"
+                class="h-full w-full text-red-100 bg-red-300 hover:text-gray-100 hover:bg-red-200 focus:outline-none focus:border-red-700 border border-red-400 rounded-br-lg">Recalls</button>
+        </div>
+    </header>
+    <script>var exports = {};</script>
+    <script src="../public/dist/js/src/shops.js" th:src="@{/dist/js/src/shops.js}"></script>
 </body>
+
 </html>

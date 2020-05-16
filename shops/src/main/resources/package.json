@@ -4,7 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "postcss css/tailwind.css -o public/css/shops.css"
+    "build": "postcss css/tailwind.css -o public/dist/css/shops.css",
+    "check": "gts check",
+    "clean": "gts clean",
+    "fix": "gts fix",
+    "prepare": "npm.cmd run compile",
+    "pretest": "npm.cmd run compile",
+    "posttest": "npm.cmd run check",
+    "compile": "tsc",
+    "compile-watch": "tsc -w"
   },
   "keywords": [],
   "author": "",
@@ -12,9 +20,13 @@
   "dependencies": {
     "autoprefixer": "^9.7.4",
     "postcss-cli": "^7.1.0",
-    "tailwindcss": "^1.2.0"
+    "tailwindcss": "^1.2.0",
+    "tslint-config-airbnb": "^5.11.2"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^2.1.2"
+    "@fullhuman/postcss-purgecss": "^2.1.2",
+    "typescript": "^3.8.3",
+    "gts": "^2.0.2",
+    "@types/node": "^13.11.1"
   }
 }
