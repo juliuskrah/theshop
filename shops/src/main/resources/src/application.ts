@@ -1,4 +1,4 @@
-export class History {
+export class Application {
   from?: string;
 
   constructor() {}

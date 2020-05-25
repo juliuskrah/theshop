@@ -16,6 +16,8 @@ to install all the dependencies
 
 ## Compile TypeScript
 
-- [x] Compile - `npm run compile`
+- [x] Compile - `npm run build`
 - [x] Clean - `npm run clean`
+- [x] Check - `npm run check`
 - [x] Fix linting - `npx gts fix src/**/*ts`
+- [x] Run - `npm start:dev`

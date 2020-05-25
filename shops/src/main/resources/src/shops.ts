@@ -1,9 +1,22 @@
-import {History} from './history';
+import {Application} from './application';
+import '../css/tailwind.css';
 
-const world = '🗺️';
-const history: History = {from: 'Home'};
+const anchors: HTMLCollectionOf<HTMLAnchorElement> = document.getElementsByTagName(
+  'a'
+);
 
-export function hello(word: string = world): string {
-  console.log(`Hello ${history.from}! `);
-  return `Hello ${world}! `;
+(() => {
+  navigate({from: 'Shops'}); // this is invoked on application start to register event listeners
+})();
+
+function navigate(app: Application) {
+  for (const anchor of Array.from(anchors)) {
+    console.log('Starting...', app.from);
+    anchor.addEventListener('click', click);
+  }
+}
+
+function click(this: HTMLAnchorElement, evt: MouseEvent) {
+  evt.preventDefault();
+  console.log('Navigating to', this.href);
 }

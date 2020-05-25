@@ -2,12 +2,13 @@
   "name": "resources",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "build": "postcss css/tailwind.css -o public/dist/css/shops.css",
-    "check": "gts check",
+    "build": "webpack --mode development",
+    "start:dev": "webpack-dev-server",
+    "check": "gts check src/**/*.ts",
     "clean": "gts clean",
-    "fix": "gts fix",
+    "fix": "gts fix src/**/*.ts",
     "prepare": "npm.cmd run compile",
     "pretest": "npm.cmd run compile",
     "posttest": "npm.cmd run check",
@@ -17,16 +18,20 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "autoprefixer": "^9.7.4",
-    "postcss-cli": "^7.1.0",
-    "tailwindcss": "^1.2.0",
-    "tslint-config-airbnb": "^5.11.2"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^2.1.2",
-    "typescript": "^3.8.3",
+    "@fullhuman/postcss-purgecss": "^2.2.0",
+    "@types/node": "^13.13.9",
+    "autoprefixer": "^9.8.0",
+    "css-loader": "^3.5.3",
     "gts": "^2.0.2",
-    "@types/node": "^13.11.1"
+    "mini-css-extract-plugin": "^0.9.0",
+    "postcss-loader": "^3.0.0",
+    "tailwindcss": "^1.4.6",
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
   }
 }
