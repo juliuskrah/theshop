@@ -1,6 +1,6 @@
 spring:
   r2dbc:
-    url: r2dbc:postgresql://localhost/master
+    url: r2dbc:postgresql://postgres/master
     password: master
     username: master
     properties:
@@ -16,7 +16,7 @@ spring:
         registration:
           shop:
             client-id: shop_service
-            client-secret: a956b994-9137-4278-880d-3ccffb4234c9
+            client-secret: 1765b0be-cf9b-4049-8913-88050d466673
 server:
   port: 8082
   forward-headers-strategy: framework

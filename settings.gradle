@@ -12,7 +12,8 @@ pluginManagement {
     }
 }
 
+rootProject.name = 'the-shop'
+
+include 'clients'
 include 'shops'
 include 'tasks'
-
-rootProject.name = 'the-shop'

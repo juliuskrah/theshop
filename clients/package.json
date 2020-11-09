@@ -1,0 +1,72 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --port 3000 --open",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "test": "vue-cli-service test:unit"
+  },
+  "dependencies": {
+    "apollo-boost": "^0.4.9",
+    "axios": "^0.20.0",
+    "chart.js": "^2.9.3",
+    "core-js": "^3.6.5",
+    "graphql": "^15.3.0",
+    "vue": "^2.6.11",
+    "vue-apollo": "^3.0.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.5",
+    "@storybook/addon-actions": "^6.0.21",
+    "@storybook/addon-essentials": "^6.0.21",
+    "@storybook/addon-links": "^6.0.21",
+    "@storybook/preset-scss": "^1.0.2",
+    "@storybook/vue": "^6.0.21",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-unit-jest": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/test-utils": "^1.0.3",
+    "autoprefixer": "^9.8.6",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^4.3.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-graphql": "^4.0.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "jest-canvas-mock": "^2.2.0",
+    "mini-css-extract-plugin": "^0.11.0",
+    "postcss-cli": "^7.1.2",
+    "postcss-loader": "^3.0.0",
+    "react-is": "^16.13.1",
+    "sass": "^1.26.10",
+    "sass-loader": "^10.0.2",
+    "style-loader": "^1.2.1",
+    "tailwindcss": "^1.7.6",
+    "vue-cli-plugin-apollo": "~0.22.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

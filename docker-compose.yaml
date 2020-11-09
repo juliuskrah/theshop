@@ -1,12 +1,12 @@
 version: '3.7'
 
 volumes:
-  postgres_data:
+  theshop_postgres_data:
       driver: local
 
 services:
   nginx:
-    image: nginx:1.16
+    image: nginx:1.19
     container_name: theshop_nginx
     ports: 
     - '80:80'
@@ -14,7 +14,7 @@ services:
     - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     - ./nginx/proxy_params:/etc/nginx/proxy_params
   keycloak:
-    image: quay.io/keycloak/keycloak:8.0.2
+    image: quay.io/keycloak/keycloak:11.0.3
     container_name: theshop_keycloak
     environment:
       DB_VENDOR: POSTGRES
@@ -31,10 +31,10 @@ services:
     - postgres
 
   postgres:
-    image: postgres:12
+    image: postgres:13
     container_name: theshop_postgres
     volumes:
-    - postgres_data:/var/lib/postgresql/data
+    - theshop_postgres_data:/var/lib/postgresql/data
     - ./postgres/initialize-db.sh:/docker-entrypoint-initdb.d/initialize-db.sh
     environment:
       POSTGRES_USER: julius

@@ -39,7 +39,8 @@ I decided to go with the first approach to data handling. Each tenant will have 
 I took it one step further, by creating a microservice based application, with each service owing its
 data. Each service also has a database created per tenant.
 
-The following services are created
+### TODO
+The following services will be created
 
 1. Shops Service - Also serves as the entrypoint and catalog area. This list all the shops (tenants)
 2. Payment Service

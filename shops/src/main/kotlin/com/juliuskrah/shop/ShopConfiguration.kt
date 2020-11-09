@@ -10,6 +10,7 @@ import io.r2dbc.spi.ConnectionFactoryOptions.*
 import io.r2dbc.spi.Option
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.r2dbc.ConnectionFactoryBuilder
+import org.springframework.boot.autoconfigure.r2dbc.EmbeddedDatabaseConnection
 import org.springframework.boot.autoconfigure.r2dbc.R2dbcProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext
@@ -79,7 +80,9 @@ class ShopConfiguration(
     }
 
     fun masterConnectionFactory(r2dbcProperties: R2dbcProperties): ConnectionFactory {
-        return ConnectionFactoryBuilder.create(r2dbcProperties).build()
+        return ConnectionFactoryBuilder.of(r2dbcProperties, {
+            EmbeddedDatabaseConnection.NONE
+        }).build()
     }
 
     fun tenantConnectionFactory(tenant: Tenant): ConnectionFactory {

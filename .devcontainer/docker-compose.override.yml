@@ -1,0 +1,30 @@
+version: '3'
+services:
+  the-shop:
+    # Note that the path of the Dockerfile and context is relative to the *primary*
+    # docker-compose.yml file (the first in the devcontainer.json "dockerComposeFile"
+    # array). The sample below assumes your primary file is in the root of your project.
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        VARIANT: 15
+        INSTALL_MAVEN: "false"
+        INSTALL_GRADLE: "true"
+        INSTALL_NODE: "true"
+        MAVEN_VERSION: "3.6.3"
+        GRADLE_VERSION: "6.7"
+        NODE_VERSION: "lts/*"
+    init: true
+    volumes:
+      # Forwards the local Docker socket to the container.
+      - /var/run/docker.sock:/var/run/docker.sock 
+      - gradle:/root/.gradle/caches/modules-2/files-2.1
+      - extensions:/root/.vscode-server/extensions
+      - .:/workspaces/theshop:cached
+    network_mode: service:keycloak
+    command: sleep infinity
+
+volumes:
+  gradle:
+  extensions:
