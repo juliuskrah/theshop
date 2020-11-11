@@ -5,9 +5,10 @@
   "scripts": {
     "serve": "vue-cli-service serve --port 3000 --open",
     "build": "vue-cli-service build",
+    "clean": "rm -rf dist",
     "lint": "vue-cli-service lint",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "storybook": "start-storybook -p 6006 --no-dll",
+    "build-storybook": "build-storybook --no-dll",
     "test": "vue-cli-service test:unit"
   },
   "dependencies": {
@@ -21,11 +22,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.11.5",
-    "@storybook/addon-actions": "^6.0.21",
-    "@storybook/addon-essentials": "^6.0.21",
-    "@storybook/addon-links": "^6.0.21",
+    "@storybook/addon-actions": "^6.0.28",
+    "@storybook/addon-essentials": "^6.0.28",
+    "@storybook/addon-links": "^6.0.28",
     "@storybook/preset-scss": "^1.0.2",
-    "@storybook/vue": "^6.0.21",
+    "@storybook/vue": "^6.0.28",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-unit-jest": "~4.5.0",
@@ -42,7 +43,7 @@
     "mini-css-extract-plugin": "^0.11.0",
     "postcss-cli": "^7.1.2",
     "postcss-loader": "^3.0.0",
-    "react-is": "^16.13.1",
+    "react-is": "^17.0.1",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.2",
     "style-loader": "^1.2.1",

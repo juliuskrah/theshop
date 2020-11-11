@@ -18,6 +18,38 @@ You'd need to create the following DNS entries in your `/etc/hosts` file:
 - 127.0.0.1       aparel.theshop.com
 - 127.0.0.1       resk.theshop.com
 
+## Building and Running
+
+If you're using the Visual Studio Code `devcontainer` extension, just run `Remote-Containers: Reopen in Container`.
+
+Otherwise start up the containers with ``docker-compose up -d`. This will startup `postgres`, `nginx` and
+`keycloak`.
+
+Build all projects with
+
+```bash
+> gradlew assemble
+```
+
+You need to run the `tasks` subproject to run the database migrations
+
+```bash
+> gradlew :tasks:bootRun
+```
+
+After that run the storefront
+
+```bash
+> gradlew :shops:bootRun
+```
+
+If the application fails to run
+
+1. Confirm the database migrations run. The database should be running on port `8080` with `julius:julius123` 
+   as `username:password` combination.
+2. Confirm the keycloak realm `tenant` is created and a confidential client `shop_service` is created. Copy 
+   the client secret and update the property `spring.security.oauth2.client.registration.shop.client-secret=:id`.
+
 ## Database Multi-tenancy
 
 At the database layer, multi-tenancy can be handled in one of three ways:

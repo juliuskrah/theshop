@@ -140,8 +140,21 @@
 			<column name="database_name" type="VARCHAR(60)"
 				remarks="If not specified, tenant name is used" />
 		</createTable>
+	</changeSet>
+	<changeSet id="202011102020" author="Julius Krah" labels="catalogs,dev">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="master">select current_database()</sqlCheck>
+		</preConditions>
 		<loadData tableName="tenant"
 			file="db/changelog/data/catalogs_tenant.csv"
+			usePreparedStatements="true" relativeToChangelogFile="false" />
+	</changeSet>
+	<changeSet id="202011102021" author="Julius Krah" labels="catalogs,docker">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="master">select current_database()</sqlCheck>
+		</preConditions>
+		<loadData tableName="tenant"
+			file="db/changelog/data/catalogs_tenant_docker.csv"
 			usePreparedStatements="true" relativeToChangelogFile="false" />
 	</changeSet>
 </databaseChangeLog>

@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import org.springframework.boot.autoconfigure.liquibase.DataSourceClosingSpringLiquibase;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.task.listener.TaskExecutionListener;
 import org.springframework.cloud.task.repository.TaskExecution;
 import org.springframework.context.ResourceLoaderAware;
@@ -23,16 +24,18 @@ import org.springframework.stereotype.Component;
 
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.MultiTenantSpringLiquibase;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TheShopTaskExecutionListener implements TaskExecutionListener, ResourceLoaderAware {
 	private final JdbcOperations jdbcTemplate;
 	private final LiquibaseProperties liquibaseProperties;
 	private ResourceLoader resourceLoader;
+	@Value("${docker.enabled:false}")
+	private boolean docker = false;
 
 	@Override
 	public void onTaskStartup(TaskExecution taskExecution) {
@@ -95,8 +98,11 @@ public class TheShopTaskExecutionListener implements TaskExecutionListener, Reso
 		liquibase.setChangeLog(this.liquibaseProperties.getChangeLog());
 		liquibase.setDefaultSchema(service);
 		liquibase.setResourceLoader(resourceLoader);
-		liquibase.setLabels(service);
 		liquibase.setContexts(service);
+		if(docker)
+			liquibase.setLabels(service + " and docker");
+		else
+			liquibase.setLabels(service + " and dev");
 		try {
 			liquibase.afterPropertiesSet();
 		} catch (Exception e) {

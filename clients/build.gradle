@@ -21,7 +21,7 @@ task npmClean(type: NpmTask) {
 jar {
 	into '/static', {
 		from 'dist'
-		include '**/*.umd.min.js'
+		include '**/*.umd.min.js', '**/*.js.map', '**/*.css', '**/*.js'
 	}
 }
 
