@@ -14,10 +14,10 @@
       <a data-th-href="@{/catalog/items}" href="/catalog/items" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
         Catalogs
       </a>
-      <a data-th-href="@{/}" href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+      <a data-th-href="@{/product/items}" href="./products" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
         Products
       </a>
-      <a data-th-href="@{/}" href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+      <a data-th-href="@{/checkout}" href="./checkout" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
         Checkout
       </a>
     </div>
