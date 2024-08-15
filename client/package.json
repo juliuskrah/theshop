@@ -22,7 +22,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.2.0",
     "eslint-plugin-vue": "^6.2.2",
-    "jest": "^26.6.3",
+    "jest": "^29.7.0",
     "jest-canvas-mock": "^2.3.0",
     "mini-css-extract-plugin": "^1.4.1",
     "node-sass": "^4.12.0",
