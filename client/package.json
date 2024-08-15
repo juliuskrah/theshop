@@ -25,7 +25,7 @@
     "jest": "^26.6.3",
     "jest-canvas-mock": "^2.3.0",
     "mini-css-extract-plugin": "^1.4.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^9.0.0",
     "postcss": "^8.2.10",
     "postcss-loader": "^5.2.0",
     "prettier": "^1.19.1",
