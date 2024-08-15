@@ -1,0 +1,19 @@
+.menu {
+  @apply px-3 py-2 rounded-md text-sm font-medium leading-5 transition duration-150 ease-in-out;
+}
+
+.menu-dark {
+  @apply text-white bg-gray-900;
+}
+
+.menu-light {
+  @apply ml-4 text-gray-300;
+}
+
+.menu:focus {
+  @apply outline-none text-white  bg-gray-700;
+}
+
+.menu-light:hover {
+  @apply text-white bg-gray-700;
+}

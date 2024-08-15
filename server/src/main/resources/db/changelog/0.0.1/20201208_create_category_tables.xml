@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"  
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+  xmlns:pro="http://www.liquibase.org/xml/ns/pro"  
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+      http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
+
+  <property dbms="hsqldb"     name="timestamp" value="TIMESTAMP WITH TIME ZONE" />
+  <property dbms="hsqldb"     name="text"      value="CLOB(1M)" />
+  <property dbms="postgresql" name="timestamp" value="TIMESTAMPTZ" />
+  <property dbms="postgresql" name="text"      value="TEXT" />
+
+  <changeSet id="202008291900" author="Julius Krah">
+    <createTable tableName="category">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" primaryKeyName="category_id_pk" />
+      </column>
+      <column name="name" type="VARCHAR(100)">
+        <constraints unique="true" nullable="false" uniqueConstraintName="category_name_unq" />
+      </column>
+      <column name="description" type="${text}" />
+      <column name="image_uri" type="VARCHAR(200)" remarks="Category cover image uri" />
+      <column name="image_media_type" type="VARCHAR(100)" />
+      <column name="thumbnail_uri" type="VARCHAR(200)" />
+      <column name="thumbnail_media_type" type="VARCHAR(100)" />
+      <column name="meta_title" type="VARCHAR(100)" />
+      <column name="meta_description" type="VARCHAR(2048)" />
+      <column name="meta_keywords" type="VARCHAR(256)" />
+      <column name="friendly_uri_fragment" type="VARCHAR(132)" remarks="SEO slug. This is appended to the base + context-path uri">
+        <constraints unique="true" nullable="false" uniqueConstraintName="category_friendly_uri_fragment_unq" />
+      </column>
+      <column name="enabled" type="BOOLEAN" defaultValueBoolean="true" />
+      <column name="displayed" type="BOOLEAN" defaultValueBoolean="false" />
+      <column name="parent_category" type="UUID" />
+      <column name="created_date" type="${timestamp}" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false" />
+      </column>
+      <column name="last_modified_date" type="${timestamp}" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false" />
+      </column>
+      <column name="created_by" type="VARCHAR(100)">
+        <constraints nullable="false" />
+      </column>
+      <column name="last_modified_by" type="VARCHAR(100)">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+    <createTable tableName="category_menu_thumbnail">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" primaryKeyName="category_menu_thumbnail_id_pk" />
+      </column>
+      <column name="alt" type="VARCHAR(60)" remarks="image alt text" />
+      <column name="media_type" type="VARCHAR(100)" />
+      <column name="priority" type="NUMERIC(2)" defaultValueNumeric="0" remarks="This flag is used to determine the default menu thumbnail on a category" />
+      <column name="uri" type="VARCHAR(200)">
+        <constraints unique="true" nullable="false" uniqueConstraintName="category_menu_thumbnail_uri_unq" />
+      </column>
+      <column name="category_id" type="UUID" />
+    </createTable>
+    <createTable tableName="product_category">
+      <column name="category_id" type="UUID" />
+      <column name="product_id" type="UUID" />
+    </createTable>
+  </changeSet>
+  <changeSet id="202010071400" author="Julius Krah">
+    <addPrimaryKey tableName="product_category" columnNames="category_id,product_id"/>
+  </changeSet>
+  <changeSet id="202010071441" author="Julius Krah">
+    <addForeignKeyConstraint baseTableName="category" baseColumnNames="parent_category" constraintName="category_parent_category_fk" referencedTableName="category" referencedColumnNames="id" onDelete="SET NULL" onUpdate="CASCADE" />
+    <addForeignKeyConstraint baseTableName="category_menu_thumbnail" baseColumnNames="category_id" constraintName="category_menu_thumbnail_category_id_fk" referencedTableName="category" referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE" />
+    <addForeignKeyConstraint baseTableName="product_category" baseColumnNames="category_id" constraintName="product_category_category_id_fk" referencedTableName="category" referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE" />
+  </changeSet>
+  <changeSet id="202010071445" author="Julius Krah" dbms="postgresql">
+    <addDefaultValue columnName="id" tableName="category" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+    <addDefaultValue columnName="id" tableName="category_menu_thumbnail" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+  </changeSet>
+  <changeSet id="202010071500" author="Julius Krah">
+    <loadData file="classpath:db/data/category_data.csv" encoding="UTF-8" tableName="category" separator="," relativeToChangelogFile="false">
+      <column name="created_date" type="${timestamp}" />
+      <column name="last_modified_date" type="${timestamp}" />
+    </loadData>
+  </changeSet>
+  <changeSet id="202010071700" author="Julius Krah">
+    <dropDefaultValue tableName="category" columnName="created_date" />
+    <dropDefaultValue tableName="category" columnName="last_modified_date" />
+  </changeSet>
+</databaseChangeLog>

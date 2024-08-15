@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{layouts/page(breadcrumb=Shop)}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Your shopping needs are catered for</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+
+<body>
+    <!--/*/ <th:block data-layout-fragment="page"> /*/-->
+    <section class="container mx-auto px-4" data-th-fragment="fragment" id="hx-container">
+        <!-- #region -->
+        <cite data-th-if="${#lists.isEmpty(categories)}">No categories found</cite>
+        <cite data-th-unless="${#lists.isEmpty(categories)}">
+            <ul>
+                <li data-th-each="category : ${categories}" data-th-text="${category.name}">A list item</li>
+            </ul>
+        </cite> <br>
+        <!-- #endregion -->
+        <p data-layout-replace="~{layouts/page :: breadcrumb(title='Category')}">
+            <main data-layout-fragment="page-content">
+                <section>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Faucibus ornare suspendisse sed nisi lacus sed viverra tellus in. Pellentesque
+                    habitant
+                    morbi tristique senectus et. Ipsum nunc aliquet bibendum enim. Magnis dis parturient montes nascetur.
+                </section>
+            </main>
+        </p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Donec et odio pellentesque diam volutpat. Commodo viverra maecenas accumsan lacus vel. Gravida
+        dictum fusce ut placerat orci nulla pellentesque dignissim. Tristique senectus et netus et malesuada fames ac.
+        Quis viverra nibh cras pulvinar. Et malesuada fames ac turpis egestas integer eget aliquet. Sit amet mauris
+        commodo quis imperdiet. Nibh mauris cursus mattis molestie a iaculis. Erat pellentesque adipiscing commodo elit
+        at imperdiet dui accumsan. Sit amet luctus venenatis lectus magna fringilla urna. At risus viverra adipiscing at
+        in tellus integer feugiat scelerisque. Faucibus turpis in eu mi bibendum neque. Risus ultricies tristique nulla
+        aliquet enim tortor at. Nec ultrices dui sapien eget. Ultrices vitae auctor eu augue ut. Scelerisque varius
+        morbi enim nunc faucibus. Amet nulla facilisi morbi tempus iaculis urna id volutpat lacus. Arcu risus quis
+        varius quam quisque id diam vel quam.
+
+        At elementum eu facilisis sed odio morbi quis. Purus ut faucibus pulvinar elementum integer enim neque volutpat
+        ac. In hac habitasse platea dictumst quisque sagittis purus sit amet. Quis ipsum suspendisse ultrices gravida.
+        Augue mauris augue neque gravida in fermentum et. Phasellus faucibus scelerisque eleifend donec pretium
+        vulputate sapien. Laoreet non curabitur gravida arcu ac tortor dignissim convallis aenean. Aliquet porttitor
+        lacus luctus accumsan tortor posuere ac. Blandit massa enim nec dui nunc. Senectus et netus et malesuada fames
+        ac turpis. Amet volutpat consequat mauris nunc congue nisi vitae suscipit. Aliquet risus feugiat in ante. Elit
+        pellentesque habitant morbi tristique senectus et netus et. Sit amet consectetur adipiscing elit pellentesque
+        habitant. Pretium nibh ipsum consequat nisl. Maecenas sed enim ut sem viverra aliquet eget. Non arcu risus quis
+        varius quam quisque. Sed euismod nisi porta lorem.
+    </section>
+    <!--/*/ </th:block> /*/-->
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{layouts/master}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Find Products to buy</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" data-th-href="@{/css/app.css}" href="css/style.css" type="text/css">
+</head>
+
+<body>
+<!--/* We define our ajax fragment inclusion here: */-->
+<!--/* This fragment just reloads the existing section applying DRY principles */-->
+<!--/* Then we can add existing JS logic to load products asynchronously (see below) */-->
+<!--/*/ <th:block data-th-fragment="fragment"> /*/-->
+    <div data-th-replace="~{index::content}">the body</div>
+    <script>
+        // onload: trigger - fetch products asynchronously
+        console.log('loaded fragment');
+        var vue = new Vue({}).$mount('#users')
+    </script>
+<!--/*/ </th:block> /*/-->
+    <p>For emphasis, content added here is ignored for the template processor</p>
+<!--/*/ <th:block data-layout-fragment="content"> /*/-->
+    <section class="container mx-auto px-4" data-th-fragment="content" id="hx-container">
+        <span class="text-sm leading-10 italic">Featured products will be loaded here</span>
+        <!-- Add content loader here -->
+        <!-- Load products here -->
+    </section>
+<!--/*/ </th:block> /*/-->
+<!--/*/ <th:block data-layout-fragment="scripts"> /*/-->
+    <script src="./js/app.js" data-th-src="@{/js/app.js}"></script>
+    <script>
+        // onload: fetch products asynchronously
+    </script>
+<!--/*/ </th:block> /*/-->
+    
+</body>
+
+</html>

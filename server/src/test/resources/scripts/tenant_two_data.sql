@@ -1,0 +1,3 @@
+INSERT INTO CATEGORY (friendly_uri_fragment, created_by, created_date, last_modified_by, last_modified_date, description, enabled, image_uri, meta_description, meta_keywords, meta_title, name, id) VALUES 
+('children_car-d937578d', 'juliuskrah', '2020-10-01 13:36:00+01:00', 'juliuskrah', '2020-10-01 13:36:00+01:00', null, false, '/thumbnail/categories/d937578d-308b-48b8-af6c-861802607b42/children-car_thumb.jpg', '', '', 'Children-Car', 'Children Car', 'd937578d308b48b8af6c861802607b42'),
+('girl_toy-dd02f30b', 'juliuskrah', '2020-10-01 13:39:00+00:00', 'juliuskrah', '2020-10-01 13:39:00+00:00', null, true, '/thumbnail/categories/dd02f30b-5068-410b-b3b7-272d44744c54/girl-toy_thumb.jpg', '', 'toys children girls', 'girl-toy', 'Girl Toys', 'dd02f30b5068410bb3b7272d44744c54')

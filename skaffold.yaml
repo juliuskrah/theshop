@@ -1,0 +1,35 @@
+apiVersion: skaffold/v2beta12
+kind: Config
+metadata:
+  name: mvp
+build:
+  artifacts:
+  - image: registry.gitlab.com/shoperal/mvp/shoperal
+    context: .
+    jib:
+      project: :core-server
+      type: maven
+  # - image: registry.gitlab.com/shoperal/mvp/shoperal
+  #   context: .
+  #   buildpacks:
+  #     builder: paketobuildpacks/builder:base
+  #     buildpacks:
+  #     - gcr.io/paketo-buildpacks/java
+  #     dependencies:
+  #       paths:
+  #       - server/src
+  #       - server/pom.xml
+  #     env:
+  #     - "JAVA_TOOL_OPTIONS=-Dfoo=bar"
+  #     - "BP_MAVEN_BUILT_MODULE=server"
+  # - image: registry.gitlab.com/shoperal/mvp/shoperal
+  #   custom:
+  #     buildCommand: |
+  #       ./mvnw -pl client clean install -DskipTests && \
+  #       ./mvnw -pl server spring-boot:build-image -DskipTests \
+  #       -Dspring-boot.build-image.publish=$PUSH_IMAGE -Dspring-boot.build-image.imageName=$IMAGE
+deploy:
+  kubectl:
+    manifests:
+    - kubernetes/core.deployment.yaml
+    - kubernetes/core.service.yaml

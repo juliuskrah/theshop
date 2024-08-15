@@ -1,3 +1,0 @@
-name,database_username,database_password,database_url,domain,enabled
-aparel,aparel,aparel,jdbc:postgresql://postgres:5432/aparel,aparel,true
-dulcet,dulcet,dulcet,jdbc:postgresql://postgres:5432/dulcet,dulcet,true

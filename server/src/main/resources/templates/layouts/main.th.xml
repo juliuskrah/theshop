@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<thlogic xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <attr sel="app-stylesheet" th:href="@{/css/shoperal.css}" />
+</thlogic>

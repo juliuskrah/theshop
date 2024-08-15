@@ -1,3 +1,5 @@
+# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.145.1/containers/java/.devcontainer/base.Dockerfile
+
 # [Choice] Java version: 11, 15
 ARG VARIANT="15"
 FROM mcr.microsoft.com/vscode/devcontainers/java:0-${VARIANT}
@@ -32,4 +34,25 @@ RUN export LATEST_COMPOSE_VERSION=$(curl -sSL "https://api.github.com/repos/dock
     && curl -sSL "https://github.com/docker/compose/releases/download/${LATEST_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
     && chmod +x /usr/local/bin/docker-compose
 
+# Default to root only access to the Docker socket, set up non-root init script
+# RUN touch /var/run/docker.socket \
+#     && ln -s /var/run/docker.socket /var/run/docker-host.socket \
+#     && apt-get update \
+#     && apt-get -y install socat \
+#     && echo '#!/bin/sh\n\
+#     sudo rm -rf /var/run/docker-host.socket\n\
+#     ((sudo socat UNIX-LISTEN:/var/run/docker.socket,fork,mode=660,user=${NONROOT_USER} UNIX-CONNECT:/var/run/docker-host.socket) 2>&1 >> /tmp/vscr-dind-socat.log) & > /dev/null\n\
+#     "$@"' >> /usr/local/share/docker-init.sh \
+#     && chmod +x /usr/local/share/docker-init.sh
+
+# [Optional] Uncomment this section to install additional OS packages.
+# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+#     && apt-get -y install --no-install-recommends <your-package-list-here>
+
+# [Optional] Uncomment this line to install global node packages.
+# RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
+
+# Setting the ENTRYPOINT to docker-init.sh will configure non-root access to the Docker
+# socket. The script will also execute CMD if you need to alter startup behaviors.
+# ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
 CMD [ "sleep", "infinity" ]

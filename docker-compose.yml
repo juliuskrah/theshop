@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_PASSWORD=mvp
+      - POSTGRES_USER=mvp
+      - POSTGRES_DB=mvp

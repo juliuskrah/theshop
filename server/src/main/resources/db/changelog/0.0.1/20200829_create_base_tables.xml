@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd
+	http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.2.xsd">
+	<property dbms="hsqldb"     name="timestamp" value="TIMESTAMP WITH TIME ZONE" />
+	<property dbms="hsqldb"     name="json"      value="CLOB(1M)" />
+	<property dbms="postgresql" name="timestamp" value="TIMESTAMPTZ" />
+	<property dbms="postgresql" name="json"      value="JSONB" />
+
+	<changeSet id="202012082254" author="Julius Krah" dbms="postgresql">
+		<sql dbms="postgresql">CREATE EXTENSION IF NOT EXISTS "uuid-ossp"</sql>
+		<rollback>DROP EXTENSION IF EXISTS "uuid-ossp" RESTRICT</rollback>
+	</changeSet>
+	<changeSet id="202012082258" author="Julius Krah">
+		<createTable tableName="admin_event">
+			<column name="id" type="UUID">
+				<constraints primaryKey="true" primaryKeyName="order_event_id_pk" />
+			</column>
+			<column name="object" type="VARCHAR(60)" remarks="This represents the object an event occurs on">
+				<constraints nullable="false" />
+			</column>
+			<column name="type" type="VARCHAR(60)" remarks="The type of event observed" />
+			<column name="event_date" type="${timestamp}">
+				<constraints nullable="false" />
+			</column>
+			<column name="details" type="${json}" remarks="Any arbitrary details linked to the current event" />
+		</createTable>
+	</changeSet>
+	<changeSet id="202012082301" author="Julius Krah" dbms="postgresql">
+        <addDefaultValue columnName="id" tableName="admin_event" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+    </changeSet>
+</databaseChangeLog>

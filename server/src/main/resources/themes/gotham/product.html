@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{layouts/page}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Blog Details</title>
+
+</head>
+
+<body>
+<!--/*/ <th:block data-layout-fragment="page"> /*/-->
+    <section data-th-fragment="content" id="hx-container">
+        products
+        <div id="product">
+            <product-card :product="product"></product-card>
+        </div>
+    </section>
+<!--/*/ </th:block> /*/-->
+<!--/*/ <th:block data-layout-fragment="scripts"> /*/-->
+<script src="./js/app.js" data-th-src="@{/js/app.js}"></script>
+<script data-th-inline="javascript" data-th-fragment="script">
+    new Vue({
+        el: '#product',
+        data: {
+            product: /*[[${product}]]*/ {}
+        }
+    })
+</script>
+<!--/*/ </th:block> /*/-->
+
+<!--/*/ <th:block data-th-fragment="fragment"> /*/-->
+    <div data-th-replace="~{product::content}">the body</div>
+    something
+    <div data-th-replace="~{product::script}">script</div>
+<!--/*/ </th:block> /*/-->
+</body>
+
+</html>

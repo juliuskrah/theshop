@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<thlogic xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <attr sel="html" layout:decorate="~{admin/layouts/master}" />
+    <attr sel="addProduct" th:href="@{/admin/product/add}" th:text="#{product.admin.navigation.add}" />
+    <attr sel="block" layout:fragment="content" th:remove="tag" />
+    <attr sel="fragmentBlock" th:fragment="list" th:remove="tag" />
+    <attr sel="list" th:unless="${#lists.isEmpty(products)}">
+        <attr sel="table//thead/tr[0]">
+            <attr sel="image" th:text="''" />
+            <attr sel="product" th:text="'product'" />
+            <attr sel="status" th:text="'status'" />
+            <attr sel="type" th:text="'type'" />
+            <attr sel="vendor" th:text="'vendor'" />
+        </attr>
+        <attr sel="table//tbody" th:remove="all-but-first">
+            <attr sel="/tr[0]" th:each="product : ${products}">
+                <attr sel="td[0]/img" th:src="@{|${product.mediaSrc}|}" />
+                <attr sel="td[1]" th:text="${product.name}" />
+                <attr sel="td[2]" th:text="${product.status}" />
+                <attr sel="td[3]" th:text="${product.type}" />
+                <attr sel="td[4]" th:text="${product.vendor}" />
+            </attr>
+        </attr>
+        <attr sel="//button#previous-button" th:disabled="not ${hasPrevious}" th:classappend="${hasPrevious} ? cursor-pointer : cursor-not-allowed" />
+        <attr sel="//button#next-button" th:disabled="not ${hasNext}" th:classappend="${hasNext} ? cursor-pointer : cursor-not-allowed" />
+    </attr>
+    <attr sel="nolist" th:if="${#lists.isEmpty(products)}">
+        <attr sel="p" th:text="#{product.admin.nolist.label}" />
+        <attr sel="a" th:href="@{/admin/product/add}" th:text="#{product.admin.navigation.add}" />
+    </attr>
+</thlogic>

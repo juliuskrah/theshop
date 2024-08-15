@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-shoperal
+  labels:
+    app: shoperal-core
+    type: loadbalancer
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/tags: environment=development,type=frontend
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /*
+        backend:
+          # service:
+          #   name: svc-shoperal-core
+          #   port:
+          #     number: 8080
+          serviceName: "svc-shoperal-core"
+          servicePort: 8080

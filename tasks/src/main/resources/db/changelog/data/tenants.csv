@@ -1,3 +1,0 @@
-name,database_username,database_password,database_url,domain,enabled
-aparel,aparel,aparel,jdbc:postgresql://localhost:5432/aparel,aparel.theshop.com,true
-dulcet,dulcet,dulcet,jdbc:postgresql://localhost:5432/dulcet,dulcet.theshop.com,true

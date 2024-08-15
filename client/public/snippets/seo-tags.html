@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <th-block th:fragment="seo" th:with="
+        url=${canonicalUrl} ?: (${store?.url} ?: ${#request.requestURL}),
+        keywords=${product?.seo?.keywords} ?: ${category?.seo?.keywords},
+        description=${pageDescription} ?: (${product?.description} ?: (${category?.description} ?: ${store?.description}))
+    ">
+        <link rel="canonical" href="https://example.com" data-th-href="${url}">
+        <meta data-th-ref="meta-description" name="description" content="" data-th-content="${#strings.abbreviate(description,150)}">
+        <meta data-th-ref="meta-author"      name="author"      content="" data-th-content="'Julius Krah'">
+        <meta data-th-ref="meta-keywords"    name="keywords"    content="" data-th-content="${keywords}">
+    </th-block>
+    <title>SEO Tags</title>
+</head>
+<body>
+    <!-- Nothing here. Everything we need will be in the header -->
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+</head>
+<body>
+    <!--
+        Mobile menu, toggle classes based on menu state.
+    
+        Menu open: "block", Menu closed: "hidden"
+    -->
+    <div class="hidden sm:hidden" data-th-fragment="nav">
+        <div class="px-2 pt-2 pb-3">
+            <a data-th-href="@{/}" data-hx-target="" data-th-hx-get="@{/}" href="#" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Home</a>
+            <a data-th-href="@{/products}" data-hx-target="" data-th-hx-get="@{/products}" href="#" class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Category</a>
+            <a data-th-href="@{/categories}" data-hx-target="" data-th-hx-get="@{/categories}" href="#" class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Products</a>
+            <a data-th-href="@{/search}" data-hx-target="" data-th-hx-get="@{/search}" href="#" class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">Search</a>
+        </div>
+    </div>
+</body>
+</html>

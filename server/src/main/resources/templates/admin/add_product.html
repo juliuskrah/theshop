@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Add a Product</title>
+</head>
+
+<body>
+<!--/*/ <th:block data-layout-fragment="content"> /*/-->
+	<!--/* Loader generated from https://skeletonreact.com/ */-->
+	<svg class="fill-current h-64 w-full" role="img" aria-labelledby="loading-aria" viewBox="0 0 450 409"
+		preserveAspectRatio="none" id="product-content-loader">
+		<title id="loading-aria">Loading...</title>
+		<rect x="0" y="0" width="100%" height="100%" clip-path="url(#clip-path)" style='fill: url("#fill");'></rect>
+		<defs>
+			<clipPath id="clip-path">
+				<rect x="45" y="40" rx="0" ry="0" width="364" height="47" />
+				<rect x="46" y="197" rx="0" ry="0" width="359" height="86" />
+				<rect x="45" y="118" rx="0" ry="0" width="363" height="47" />
+				<rect x="47" y="319" rx="0" ry="0" width="358" height="84" />
+				<rect x="45" y="22" rx="0" ry="0" width="86" height="10" />
+				<rect x="46" y="99" rx="0" ry="0" width="86" height="10" />
+				<rect x="46" y="178" rx="0" ry="0" width="86" height="10" />
+				<rect x="47" y="300" rx="0" ry="0" width="86" height="10" />
+			</clipPath>
+			<linearGradient id="fill">
+				<stop offset="0.599964" stop-color="#f3f3f3" stop-opacity="1">
+					<animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1" dur="2s"
+						repeatCount="indefinite"></animate>
+				</stop>
+				<stop offset="1.59996" stop-color="#ecebeb" stop-opacity="1">
+					<animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1" dur="2s"
+						repeatCount="indefinite"></animate>
+				</stop>
+				<stop offset="2.59996" stop-color="#f3f3f3" stop-opacity="1">
+					<animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1" dur="2s"
+						repeatCount="indefinite"></animate>
+				</stop>
+			</linearGradient>
+		</defs>
+	</svg>
+	<div id="product-alert" class="px-4 py-3 leading-normal rounded-lg invisible" role="alert">
+		<p>Alert messages are shown here</p>
+	</div>
+	<div id="form"></div>
+	<script data-th-inline="javascript">
+		let url = /*[[@{/admin/product/add(role=form)}]]*/ "/upload";
+		Shoperal.loadFragment(url);
+	</script>
+<!--/*/ </th:block> /*/-->
+<th:block data-th-fragment="form">
+	<div>
+		<div class="md:grid md:grid-cols-3 md:gap-6">
+			<div class="md:col-span-1">
+				<div class="px-4 sm:px-0">
+					<h3 class="text-lg font-medium leading-6 text-gray-900">Product</h3>
+					<p class="mt-1 text-sm text-gray-600">
+						This information will be displayed publicly so be careful what you share.
+					</p>
+				</div>
+			</div>
+			<div class="mt-5 md:mt-0 md:col-span-2">
+				<form action="#" method="POST" id="product-form-s-01">
+					<div class="shadow sm:rounded-md sm:overflow-hidden">
+						<div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+							<div class="grid grid-cols-3 gap-6">
+								<div class="col-span-3 sm:col-span-2">
+									<label for="name" class="block text-sm font-medium text-gray-700"
+										data-th-ref="nameLabel">
+										Name
+									</label>
+									<div class="mt-1 flex rounded-md shadow-sm">
+										<input data-th-ref="nameInput" autocomplete="off" type="text"
+											class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-l-md rounded-r-md sm:text-sm border-gray-300"
+											placeholder="Jordan Shoe">
+									</div>
+								</div>
+							</div>
+							<div class="grid grid-cols-3 gap-6">
+								<div class="col-span-3 sm:col-span-2">
+									<label data-th-ref="handleLabel" for="friendlyName" class="block text-sm font-medium text-gray-700">
+										Friendly Name
+									</label>
+									<div class="mt-1 flex rounded-md shadow-sm">
+										<input data-th-ref="handleInput" autocomplete="off" type="text"
+											class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-l-md rounded-r-md sm:text-sm border-gray-300"
+											placeholder="jordan-shoe">
+									</div>
+								</div>
+							</div>
+
+							<div>
+								<label data-th-ref="descriptionLabel" for="description" class="block text-sm font-medium text-gray-700">
+									Description
+								</label>
+								<div class="mt-1">
+									<textarea data-th-ref="descriptionTextarea" rows="3"
+										class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"></textarea>
+								</div>
+								<p class="mt-2 text-sm text-gray-500">
+									Brief description for your product. URLs are hyperlinked.
+								</p>
+							</div>
+							<input data-th-ref="mediaInput" type="hidden">
+
+							<div>
+								<label data-th-ref="mediaLabel" class="block text-sm font-medium text-gray-700">
+									Product photo
+								</label>
+								<progress id="product-progress-bar-s-01" max=100 value=0></progress>
+								<div id="product-drop-area-s-01"
+									class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 hover:border-blue-500 border-dashed rounded-md">
+									<div class="space-y-1 text-center">
+										<svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
+											viewBox="0 0 48 48" aria-hidden="true">
+											<path
+												d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+												stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+										</svg>
+										<div class="flex text-sm text-gray-600">
+											<label for="product-file-upload"
+												class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+												<span>Upload a file</span>
+												<input id="product-file-upload"
+													accept="image/png,image/jpeg" name="file-upload" type="file"
+													multiple class="sr-only">
+											</label>
+											<p class="pl-1">or drag and drop</p>
+										</div>
+										<p class="text-xs text-gray-500">
+											PNG, JPEG, JPG up to [[${productMediaMaxFileSize}]]MB
+										</p>
+									</div>
+									<div id="product-gallery" class="flex"></div>
+								</div>
+							</div>
+						</div>
+						<div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+							<button data-th-ref="save" type="submit"
+								class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+								Save
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script data-th-inline="javascript">
+		let url = /*[[@{/admin/presign-image-uri}]]*/ "/upload";
+		function handleUpload() {
+			let uploadInput = document.getElementById('product-file-upload');
+			uploadInput.onchange = function () {
+				Shoperal.handleProductUpload(this.files, url);	
+			}
+		}
+		handleUpload();
+		Shoperal.intializeProductAdminForm(url);
+	</script>
+</th:block>
+</body>
+
+</html>

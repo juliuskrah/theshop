@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+      http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
+    <property dbms="hsqldb"     name="timestamp" value="TIMESTAMP WITH TIME ZONE" />
+    <property dbms="hsqldb"     name="json"      value="CLOB(1M)" />
+    <property dbms="postgresql" name="timestamp" value="TIMESTAMPTZ" />
+    <property dbms="postgresql" name="json"      value="JSONB" />
+
+    <changeSet id="202103191236" author="Julius Krah">
+        <createTable tableName="order">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="order_id_pk" />
+            </column>
+            <column name="channel" type="VARCHAR(150)">
+                <constraints nullable="false" />
+            </column>
+            <column name="order_number" type="BIGINT" />
+            <column name="customer" type="VARCHAR(150)" remarks="The customer username. This will be used to retrieve customer details from the customer service">
+                <constraints nullable="false" notNullConstraintName="order_customer_nn" />
+            </column>
+            <column name="payment_status" type="VARCHAR(60)" remarks="The payment status" />
+            <column name="status" type="VARCHAR(60)" defaultValue="UNARCHIVED" remarks="Order status" />
+            <column name="fulfillment_status" type="VARCHAR(60)" remarks="The fulfillment status of this order" />
+            <column name="created_date" type="${timestamp}">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_date" type="${timestamp}">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_by" type="VARCHAR(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_by" type="VARCHAR(100)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="order_line_item">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="order_line_item_id_pk" />
+            </column>
+            <column name="quantity" type="INT" defaultValue="1" />
+            <column name="product_id" type="UUID" />
+            <column name="order_id" type="UUID">
+                <constraints nullable="false" />
+            </column>
+            <column name="price" type="CURRENCY" remarks="The unit price at the time of order placement" defaultValueNumeric="0.00" />
+        </createTable>
+        <createTable tableName="order_payment" remarks="Records the payments made on an order. A payment is either made in full or partially">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="order_payment_id_pk" />
+            </column>
+            <column name="amount_paid" type="CURRENCY" defaultValue="0.00">
+                <constraints nullable="false" />
+            </column>
+            <column name="order_id" type="UUID" />
+            <column name="date_added" type="${timestamp}" remarks="The time and date payment was added">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="202103201348" author="Julius Krah">
+        <addForeignKeyConstraint baseTableName="order_payment" baseColumnNames="order_id" constraintName="order_payment_order_id_fk" referencedTableName="order" referencedColumnNames="id" onDelete="SET NULL" onUpdate="CASCADE" />
+        <addForeignKeyConstraint baseTableName="order_line_item" baseColumnNames="order_id" constraintName="order_line_item_order_id_fk" referencedTableName="order" referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE" />
+        <addForeignKeyConstraint baseTableName="order_line_item" baseColumnNames="product_id" constraintName="order_line_item_product_id_fk" referencedTableName="product" referencedColumnNames="id" onDelete="SET NULL" onUpdate="CASCADE" />
+    </changeSet>
+    <changeSet id="202103201357" author="Julius Krah" dbms="postgresql">
+        <addDefaultValue columnName="id" tableName="order" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+        <addDefaultValue columnName="id" tableName="order_line_item" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+        <addDefaultValue columnName="id" tableName="order_payment" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+    </changeSet>
+</databaseChangeLog>

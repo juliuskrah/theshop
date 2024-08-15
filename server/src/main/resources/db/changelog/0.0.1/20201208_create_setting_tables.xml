@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd
+	http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.2.xsd">
+
+    <property dbms="hsqldb"     name="timestamp" value="TIMESTAMP WITH TIME ZONE" />
+    <property dbms="hsqldb"     name="text"      value="CLOB(1M)" />
+    <property dbms="postgresql" name="timestamp" value="TIMESTAMPTZ" />
+    <property dbms="postgresql" name="text"      value="TEXT" />
+
+    <changeSet id="202012082237" author="Julius Krah">
+        <createTable tableName="presentment_currency">
+            <column name="store_id" type="UUID">
+                <constraints nullable="false" />
+            </column>
+            <column name="currency" type="VARCHAR(3)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="store_setting">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="store_setting_id_pk" />
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="${text}" />
+            <column name="email" type="VARCHAR(100)" remarks="store owner's email address. Shoperal will reach merchant on this">
+                <constraints nullable="false" />
+            </column>
+            <column name="logo" type="VARCHAR(200)" remarks="the uri for the store logo" />
+            <column name="contact_email" type="VARCHAR(100)" remarks="public facing email address" />
+            <column name="currency_code" type="VARCHAR(3)">
+                <constraints nullable="false" />
+            </column>
+            <column name="iana_timezone" type="VARCHAR(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="shoperal_domain" type="VARCHAR(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="setup_required" type="BOOLEAN" defaultValueBoolean="true"></column>
+            <column name="address_id" type="UUID" />
+            <column name="created_date" type="${timestamp}">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_date" type="${timestamp}">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_by" type="VARCHAR(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_by" type="VARCHAR(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="store_version" type="VARCHAR(50)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="store_preference">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="store_preference_id_pk" />
+            </column>
+            <column name="home_page_title" type="VARCHAR(100)" />
+        </createTable>
+        <createTable tableName="address">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="address_id_pk" />
+            </column>
+        </createTable>
+        <createTable tableName="social_media_handle">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="social_media_handle_id_pk" />
+            </column>
+            <column name="name" type="VARCHAR(60)">
+                <constraints nullable="false" />
+            </column>
+            <column name="uri" type="VARCHAR(200)" />
+            <column name="default_uri" type="VARCHAR(200)" remarks="This is provided as a hint below the input field" />
+            <column name="icon" type="VARCHAR(200)" remarks="Prefixes (class or URI) - The icon may be available via a URI or CSS icon" />
+        </createTable>
+        <createTable tableName="menu">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="menu_id_pk" />
+            </column>
+            <column name="title" type="VARCHAR(60)" />
+            <column name="handle" type="VARCHAR(60)">
+                <constraints unique="true" />
+            </column>
+        </createTable>
+        <createTable tableName="menu_item">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="menu_item_id_pk" />
+            </column>
+            <column name="title" type="VARCHAR(60)">
+                <constraints nullable="false" />
+            </column>
+            <column name="uri" type="VARCHAR(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="menu_id" type="UUID" />
+            <column name="position" type="INT" />
+        </createTable>
+    </changeSet>
+
+    <!-- <changeSet id="202010071348" author="Julius Krah">
+        <preConditions onFail="MARK_RAN">
+            <runningAs username="landlord" />
+        </preConditions>
+        <createTable tableName="tenant">
+            <column name="id" type="UUID" />
+        </createTable>
+        <rollback>DROP TABLE IF EXISTS landlord</rollback>
+    </changeSet> -->
+
+    <changeSet id="202012082248" author="Julius Krah">
+        <addForeignKeyConstraint baseTableName="store_setting" baseColumnNames="address_id" constraintName="store_setting_address_id_fk" referencedTableName="address" referencedColumnNames="id" onDelete="SET NULL" onUpdate="CASCADE" />
+        <addForeignKeyConstraint baseTableName="store_preference" baseColumnNames="id" constraintName="store_preference_id_fk" referencedTableName="store_setting" referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE" />
+        <addForeignKeyConstraint baseTableName="menu_item" baseColumnNames="menu_id" constraintName="menu_menu_id_fk" referencedTableName="menu" referencedColumnNames="id" />
+    </changeSet>
+    <changeSet id="202012082249" author="Julius Krah" dbms="postgresql">
+        <addDefaultValue columnName="id" tableName="store_setting" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+        <addDefaultValue columnName="id" tableName="store_preference" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+        <addDefaultValue columnName="id" tableName="social_media_handle" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+        <addDefaultValue columnName="id" tableName="address" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+        <addDefaultValue columnName="id" tableName="menu" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+        <addDefaultValue columnName="id" tableName="menu_item" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+    </changeSet>
+    <changeSet id="202012082315" author="Julius Krah">
+        <insert tableName="store_setting">
+            <column name="id" type="UUID" value="16e98b25-d8cc-4590-90c4-d0f5dcf78548" />
+            <column name="name" value="${shop-name}" />
+            <column name="email" value="${shop-email}" />
+            <column name="iana_timezone" value="${shop-iana-timezone}" />
+            <column name="currency_code" value="${shop-default-currency-code}" />
+            <column name="shoperal_domain" value="${shoperal-domain}" />
+            <column name="store_version" value="${shop-version}" />
+            <column name="created_by" value="system" />
+            <column name="last_modified_by" value="system" />
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP" />
+            <column name="last_modified_date" valueComputed="CURRENT_TIMESTAMP" />
+        </insert>
+        <insert tableName="menu">
+            <column name="id" type="UUID" value="52ab7e1a-eda9-41f6-824c-bdf471c24efa" />
+            <column name="title" value="Main menu" />
+            <column name="handle" value="main-menu"/>
+        </insert>
+        <insert tableName="menu_item">
+            <column name="id" type="UUID" value="245efbe7-808c-4d1a-a1e1-df66d5eacb26" />
+            <column name="menu_id" type="UUID" value="52ab7e1a-eda9-41f6-824c-bdf471c24efa" />
+            <column name="title" value="Home" />
+            <column name="position" valueNumeric="0" />
+            <column name="uri" value="/" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>

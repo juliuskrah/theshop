@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- TODO define canonical URL for product. A product can have multiple URLs -->
+    <th-block th:fragment="social" th:with="
+        ogTitle=${pageTitle} ?: (${store?.name} ?: 'Default title'),
+        ogUrl=${#request.requestURL} ?: (${store?.url} ?: 'https://example.com'),
+        ogType=${product} ? 'product' : (${category} ? 'product.group' : (${blog} ? 'article' : 'website')),
+        ogDescription=${pageDescription} ?: (${store?.description} ?: (${store?.name} ?: ''))
+    ">
+        <!--/* A product can have multiple media attached to it */-->
+        <th-block data-th-each="media : ${product?.media}">
+            <meta property="og:image"            content="https://imgur.com" data-th-content="${media.previewImage}">
+            <meta property="og:image:secure_url" content="https://imgur.com" data-th-content="${media.previewImage}">
+        </th-block>
+        <!--/* This is rendered when it is a page. Store owners can create custom pages e.g. Privacy Statement page */-->
+        <th-block data-th-if="${pageImage}">
+            <meta property="og:image"            content="https://imgur.com" data-th-content="${pageImage}">
+            <meta property="og:image:secure_url" content="https://imgur.com" data-th-content="${pageImage}">
+        </th-block>
+        <!--/* This is rendered when on a category page */-->
+        <th-block data-th-if="${category?.coverImage}">
+            <meta property="og:image"            content="https://imgur.com" data-th-content="${category?.coverImage?.src}">
+            <meta property="og:image:secure_url" content="https://imgur.com" data-th-content="${category?.coverImage?.src}">
+        </th-block>
+        <!--/* This is rendered when on a blog page */-->
+        <th-block data-th-if="${blog?.coverImage}">
+            <meta property="og:image"            content="https://imgur.com" data-th-content="${blog?.coverImage?.src}">
+            <meta property="og:image:secure_url" content="https://imgur.com" data-th-content="${blog?.coverImage?.src}">
+        </th-block>
+        <!--/* This is rendered when on a product page */-->
+        <th-block data-th-if="${product}">
+            <meta property="og:price:amount"     content="45.00"             data-th-content="${product.price}">
+            <meta property="og:price:currency"   content="GHS"               data-th-content="${store.currencyCode}">
+        </th-block>
+
+        <meta property="og:title"       content="title"                    data-th-content="${ogTitle}">
+        <meta property="og:type"        content="website"                  data-th-content="${ogType}">
+        <meta property="og:url"         content="https://placehoslder.com" data-th-content="${ogUrl}">
+        <meta property="og:description" content="description"              data-th-content="${ogDescription}">
+        <meta property="og:site_name"   content="Shoperal"                 data-th-content="${store?.name}">
+
+        <!--/* if twitter
+            <meta name="twitter:site" content="">
+        endif */-->
+        <meta name="twitter:card"        content="summary_large_image">
+        <meta name="twitter:title"       content="A title" data-th-content="${ogTitle}">
+        <meta name="twitter:description" content="some description" data-th-content="${ogDescription}">
+    </th-block>
+    <title>Social Media Tags</title>
+</head>
+<body>
+    <!-- Nothing here. Everything we need will be in the header -->
+</body>
+</html>

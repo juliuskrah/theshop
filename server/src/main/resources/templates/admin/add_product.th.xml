@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<thlogic xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <attr sel="html" layout:decorate="~{admin/layouts/master}" />
+    <attr sel="form" th:action="@{/admin/product}" th:object="${product}">
+        <attr sel="//nameLabel" th:title="#{product.admin.form.name.title}" th:text="#{product.admin.form.name.label}" />
+        <attr sel="//nameInput" th:field="*{name}" th:placeholder="#{product.admin.form.name.placeholder}" />
+        <attr sel="//handleLabel" th:title="#{product.admin.form.friendly.title}" th:text="#{product.admin.form.friendly.label}" />
+        <attr sel="//handleInput" th:field="*{friendlyName}" th:placeholder="#{product.admin.form.friendly.placeholder}" />
+        <attr sel="//descriptionLabel" th:title="#{product.admin.form.description.title}" th:text="#{product.admin.form.description.label}" />
+        <attr sel="//descriptionTextarea" th:field="*{description}" />
+        <attr sel="//mediaLabel" th:title="#{product.admin.form.media.title}" th:text="#{product.admin.form.media.label}" />
+        <attr sel="//mediaInput" th:field="*{mediaSrc}" />
+        <attr sel="//save" th:text="#{product.admin.form.button.add}" />
+    </attr>
+</thlogic>

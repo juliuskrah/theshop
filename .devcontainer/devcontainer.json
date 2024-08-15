@@ -1,11 +1,11 @@
 {
 	"name": "Java",
 	"dockerComposeFile": [
-		"../docker-compose.yaml",
+		"../docker-compose.yml",
 		"docker-compose.override.yml"
 	],
-	"service": "the-shop",
-	"workspaceFolder": "/workspaces/theshop",
+	"service": "mvp",
+	"workspaceFolder": "/workspaces/mvp",
 	"shutdownAction": "stopCompose",
 	"remoteEnv": {
 		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
@@ -19,24 +19,24 @@
 	"extensions": [
 		"vscjava.vscode-java-pack",
 		"pivotal.vscode-boot-dev-pack",
-		"fwcd.kotlin",
 		"redhat.vscode-xml",
 		"gabrielbb.vscode-lombok",
 		"octref.vetur",
 		"apollographql.vscode-apollo",
 		"esbenp.prettier-vscode",
-		"ms-azuretools.vscode-docker"
+		"ms-azuretools.vscode-docker",
+		"ms-kubernetes-tools.vscode-kubernetes-tools",
+		"bradlc.vscode-tailwindcss"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		8080,
-		80,
 		6006,
-		8082,
-		5432
+		5432,
+		3000
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": ["docker --version"]
+	// "postCreateCommand": ["docker --version"],
 	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
 	// "remoteUser": "vscode"
 }

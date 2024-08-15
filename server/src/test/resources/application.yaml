@@ -1,0 +1,32 @@
+spring:
+  liquibase:
+    change-log: classpath:/db/db.changelog-master.xml
+    parameters:
+      shop-name: ${shoperal.tenant.name}
+      shop-email: ${shoperal.tenant.email}
+      shop-default-currency-code: ${shoperal.tenant.currency}
+      shop-iana-timezone: ${shoperal.tenant.iana-timezone}
+      shop-version: "@project.version@"
+      shoperal-domain: ${shoperal.tenant.shoperal-domain}
+  datasource:
+    name: mainTenant
+    hikari:
+      jdbc-url: jdbc:hsqldb:mem:landlord
+  main.allow-bean-definition-overriding: false
+  jpa:
+    show-sql: true
+    properties:
+      '[hibernate.format_sql]': true
+      '[hibernate.highlight_sql]': true
+shoperal:
+  file-store-base-location: 'file:${user.home}/shoperal/test/files'
+  tenant:
+    name: Shoperal Test
+    email: example@jaesoft.tech
+    currency: KES
+    iana-timezone: Africa/Nairobi
+    shoperal-domain: shoperal-test.shoperal.app
+  s3:
+    aws-access-key-id: AKIAIOSFODNN7EXAMPLE
+    aws-secret-access-key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    

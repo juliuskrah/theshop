@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{admin/layouts/master}">
+
+<head>
+	<title>Catalog</title>
+</head>
+
+<body>
+	<!--/*/ <th:block data-layout-fragment="content"> /*/-->
+
+	<div id="users">
+		<users-grid data-th-v-bind:users-data="${usersData}"></users-grid>
+	</div>
+
+	<script>
+		new Vue({
+
+		}).$mount('#users')
+	</script>
+	<!--/*/ </th:block> /*/-->
+</body>
+
+</html>

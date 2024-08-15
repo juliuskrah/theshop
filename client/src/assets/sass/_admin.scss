@@ -1,0 +1,15 @@
+.shoperal-table {
+    @apply relative w-full border;
+}
+
+.shoperal-table-head-row {
+    @apply sticky top-0 px-6 py-3 text-blue-900 bg-blue-300;
+}
+
+.shoperal-table-body {
+    @apply divide-y bg-blue-100;
+}
+
+.shoperal-table-body-row {
+    @apply px-6 py-4 text-center;
+}

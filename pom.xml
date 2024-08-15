@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.shoperal</groupId>
+    <artifactId>core</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <name>Shoperal Core</name>
+    <description>Core Engine of Shoperal</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.1</version>
+        <relativePath />
+    </parent>
+
+    <properties>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <revision>0.0.2-SNAPSHOT</revision>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <configuration>
+                    <container>
+                        <environment>
+                            <JAVA_TOOL_OPTIONS>-javaagent:/opentelemetry/apm/agent/opentelemetry-javaagent-all.jar</JAVA_TOOL_OPTIONS>
+                            <OTEL_TRACES_EXPORTER>logging</OTEL_TRACES_EXPORTER>
+                            <OTEL_METRICS_EXPORTER>logging</OTEL_METRICS_EXPORTER>
+                        </environment>
+                    </container>
+                    <skaffold>
+                        <watch>
+                            <includes>
+                                <include>pom.xml</include>
+                                <include>server/pom.xml</include>
+                                <include>client/pom.xml</include>
+                                <include>server/src</include>
+                                <include>client/dist</include>
+                            </includes>
+                        </watch>
+                    </skaffold>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.1.0</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>3.1.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <modules>
+        <module>client</module>
+        <module>server</module>
+    </modules>
+</project>

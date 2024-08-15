@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td>Date</td>
+            <td th:text="${timestamp}">Wed Jan 06 15:00:00 UTC 2021</td>
+        </tr>
+        <tr>
+            <td>Path</td>
+            <td th:text="${path}">/home/something</td>
+        </tr>
+        <tr>
+            <td>Error</td>
+            <td th:text="${error}">Bad Request</td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td th:text="${status}">400</td>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td th:text="${message}">You didn't add something</td>
+        </tr>
+        <tr>
+            <td>Exception</td>
+            <td th:text="${exception}">Stacktrace</td>
+        </tr>
+        <tr>
+            <td>Trace</td>
+            <td>
+                <pre th:text="${trace}">More Stacktrace</pre>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

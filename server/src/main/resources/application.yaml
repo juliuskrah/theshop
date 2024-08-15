@@ -1,0 +1,101 @@
+server:
+  servlet.context-path: /
+  http2.enabled: true
+  shutdown: GRACEFUL
+  compression:
+    enabled: true
+    # The comma-separated list of mime types that should be compressed
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    # Compress the response only if the response size is at least 2KB
+    min-response-size: 2048
+spring:
+  mvc.async.request-timeout: 1m
+  application:
+    name: '@project.artifactId@'
+  lifecycle.timeout-per-shutdown-phase: 30s
+  aop.proxy-target-class: false
+  jmx:
+    enabled: false
+  web.resources:
+    # Can these be loaded from a PersistentVolume?
+    static-locations:
+    - classpath:/META-INF/resources/
+    - classpath:/resources/
+    - classpath:/static/
+    - classpath:/public/
+    # Support for custom static file location
+    - '[charset=UTF-8]file:/root/static'
+    chain.strategy.content:
+      enabled: true
+      paths: /js/**,/css/**
+  jpa:
+    open-in-view: false
+    properties:
+      '[hibernate.format_sql]': false
+      '[hibernate.highlight_sql]': false
+      '[hibernate.types.print.banner]': false
+  liquibase:
+    drop-first: false
+    change-log: classpath:/db/db.changelog-master.xml
+    tag: initial-changes
+    test-rollback-on-update: false
+    parameters:
+      shop-name: ${shoperal.tenant.name}
+      shop-email: ${shoperal.tenant.email}
+      shop-default-currency-code: ${shoperal.tenant.currency}
+      shop-iana-timezone: ${shoperal.tenant.iana-timezone}
+      shop-version: "@project.version@"
+      shoperal-domain: ${shoperal.tenant.shoperal-domain}
+    # rollback-file: /root/rollback.sql
+  messages:
+    basename: messages/messages, messages/admin/messages, messages/category/messages, messages/product/messages
+  security.user:
+    name: juliuskrah
+    password: '{noop}julius123'
+    roles: [USER, ADMIN]
+  datasource:
+    url: jdbc:hsqldb:mem:landlord
+    name: shoperal
+    hikari:
+      register-mbeans: false
+      allow-pool-suspension: true
+  thymeleaf:
+    enable-spring-el-compiler: true
+shoperal:
+  # This property is only required for Local development
+  file-store-base-location: 'file:${user.home}/shoperal/files'
+  cors:
+    allow-credentials: true
+    allowed-origins: '*'
+    allowed-methods: GET, HEAD, POST
+    allowed-headers: '*'
+    max-age: 1800
+  s3:
+    aws-access-key-id: AKIAIOSFODNN7EXAMPLE
+    aws-secret-access-key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+  tenant:
+    name: Shoperal Dev
+    email: julius.krah@jaesoft.tech
+    currency: GHS
+    iana-timezone: Africa/Accra
+    shoperal-domain: shoperal-dev.shoperal.app
+    limits:
+      product-media-max-file-size: 5MB
+      product-media-max-count: 5
+management:
+  endpoints:
+    web:
+      base-path: /management
+      cors:
+        allowed-origins: '*'
+        allowed-methods: GET
+  endpoint:
+    logfile.enabled: false
+    health:
+      show-details: WHEN_AUTHORIZED
+      show-components: WHEN_AUTHORIZED
+      roles: ENDPOINT_ADMIN
+info:
+  shoperal:
+    version: "@project.version@"
+    '[build.timestamp]': "@timestamp@"

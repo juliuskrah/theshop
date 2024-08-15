@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-shoperal-core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shoperal-core
+  template:
+    metadata:
+      labels:
+        app: shoperal-core
+        type: frontend
+        eks.amazonaws.com/component: spring-app
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      volumes: 
+      - name: opentelemetry-java-apm-agent 
+        emptyDir: {}
+      # https://www.elastic.co/blog/using-elastic-apm-java-agent-on-kubernetes-k8s
+      initContainers: 
+      - name: opentelemetry-java-agent 
+        image: juliuskrah/opentelemetry-java-agent:1.0.1 
+        volumeMounts: 
+        - mountPath: /opentelemetry/apm/agent 
+          name: opentelemetry-java-apm-agent
+        command: ['cp', '-v', '/usr/agent/opentelemetry-javaagent-all.jar', '/opentelemetry/apm/agent']
+      containers:
+      - name: shoperal-core
+        image: $IMAGE_TAG
+        volumeMounts: 
+        - mountPath: /opentelemetry/apm/agent 
+          name: opentelemetry-java-apm-agent
+        resources:
+          limits:
+            memory: "700Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+        env:
+          - name: SPRING_DATASOURCE_USERNAME
+            value: mvp
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: mvp
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:postgresql://svc-postgre-sql/mvp 
+          - name: SHOPERAL_S3_AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                key: accessKeyId
+                name: awss3credentials
+          - name: SHOPERAL_S3_AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                key: secretAccessKey
+                name: awss3credentials
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 30"]
+      imagePullSecrets:
+      - name: gitlabregcred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      database: postgres
+  template:
+    metadata:
+      labels:
+        database: postgres
+        type: database
+        eks.amazonaws.com/component: spring-app
+    spec:
+      containers:
+        - name: postgre-sql
+          image: postgres:12-alpine
+          resources:
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: mvp
+            - name: POSTGRES_USER
+              value: mvp
+            - name: POSTGRES_DB
+              value: mvp

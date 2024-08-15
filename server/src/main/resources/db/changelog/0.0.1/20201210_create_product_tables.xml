@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+      http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
+    <property dbms="hsqldb"     name="timestamp" value="TIMESTAMP WITH TIME ZONE" />
+    <property dbms="hsqldb"     name="text"      value="CLOB(1M)" />
+    <property dbms="hsqldb"     name="json"      value="CLOB(1M)" />
+    <property dbms="postgresql" name="timestamp" value="TIMESTAMPTZ" />
+    <property dbms="postgresql" name="text"      value="TEXT" />
+    <property dbms="postgresql" name="json"      value="JSONB" />
+
+    <changeSet id="202012102254" author="Julius Krah">
+        <createTable tableName="product">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="product_id_pk" />
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints unique="true" nullable="false" uniqueConstraintName="product_name_unq" />
+            </column>
+            <column name="description" type="${text}" />
+            <column name="featured_media" type="VARCHAR(200)" remarks="Featured media URI on this product">
+                <constraints nullable="false" notNullConstraintName="product_featured_media_nn" />
+            </column>
+            <column name="featured_image" type="VARCHAR(200)" remarks="Featured image URI on this product" />
+            <column name="friendly_uri_fragment" type="VARCHAR(132)" remarks="SEO slug. This is appended to the base + context-path uri">
+                <constraints unique="true" nullable="false" uniqueConstraintName="product_friendly_uri_fragment_unq" />
+            </column>
+            <column name="type" type="VARCHAR(100)" remarks="The product type specified by the merchant" />
+            <column name="vendor" type="VARCHAR(100)" />
+            <column name="status" type="VARCHAR(10)" defaultValue="DRAFT">
+                <constraints nullable="false" notNullConstraintName="product_status_nn" />
+            </column>
+            <column name="tags" type="VARCHAR(100) ARRAY" />
+            <column name="created_date" type="${timestamp}">
+                <constraints nullable="false" />
+            </column>
+            <column name="in_stock" type="BOOLEAN" defaultValueBoolean="true" />
+            <column name="price" type="CURRENCY" defaultValueNumeric="0.0"/>
+            <column name="compared_price" type="CURRENCY" remarks="This will usually contain the 
+                product's original price in the case of a promotion" />
+            <column name="last_modified_date" type="${timestamp}">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_by" type="VARCHAR(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_by" type="VARCHAR(100)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="product_detail">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="product_detials_id_pk" />
+            </column>
+            <column name="type" type="VARCHAR(100)" remarks="The product type specified by the merchant" />
+            <column name="vendor" type="VARCHAR(100)" />
+            <column name="tags" type="VARCHAR(100) ARRAY" />
+            <column name="status" type="VARCHAR(10)" defaultValue="DRAFT">
+                <constraints nullable="false" notNullConstraintName="product_detail_status_nn" />
+            </column>
+            <column name="description" type="${text}" />
+            <column name="cost_price" type="CURRENCY" remarks="The cost for the product" />
+        </createTable>
+        <createTable tableName="product_technical_seo" remarks="read more -- https://www.reliablesoft.net/technical-seo/">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="product_seo_id_pk" />
+            </column>
+            <column name="product_id" type="UUID" />
+            <column name="html_element_type" type="VARCHAR(10)" defaultValue="META" remarks="META, LINK or SCRIPT">
+                <constraints nullable="false" notNullConstraintName="product_technical_seo_element_nn" />
+            </column>
+            <column name="name" type="VARCHAR(100)" remarks="the name when applied on META" />
+            <column name="content" type="VARCHAR(2048)" remarks="the content is required when applied on META" />
+            <column name="property" type="VARCHAR(100)" remarks="e.g. &lt;meta property='og:locale' content='en_US'&gt;" />
+            <column name="rel" type="VARCHAR(100)" remarks="the rel when applied on LINK" />
+            <column name="href" type="VARCHAR(264)" remarks="the href when applied on LINK" />
+            <column name="type" type="VARCHAR(100)" remarks="the type when applied on SCRIPT" />
+            <column name="body" type="${json}" remarks="the body (JSON LD) when applied on SCRIPT" />
+        </createTable>
+        <createTable tableName="inventory_location">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="inventory_location_id_pk" />
+            </column>
+        </createTable>
+        <createTable tableName="product_inventory">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="product_inventory_id_pk" />
+            </column>
+            <column name="product_id" type="UUID" />
+            <column name="inventory_location_id" type="UUID" />
+            <column name="quantity" type="INT" defaultValue="0" />
+        </createTable>
+    </changeSet>
+    <changeSet id="202012110039" author="Julius Krah">
+        <addForeignKeyConstraint baseTableName="product_technical_seo" baseColumnNames="product_id" constraintName="product_technical_seo_product_id_fk" referencedTableName="product" referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE" />
+        <addForeignKeyConstraint baseTableName="product_detail" baseColumnNames="id" constraintName="product_detail_id_fk" referencedTableName="product" referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE" />
+        <addForeignKeyConstraint baseTableName="product_category" baseColumnNames="product_id" constraintName="product_category_product_id_fk" referencedTableName="product" referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE" /> 
+    </changeSet>
+    <changeSet id="202012110040" author="Julius Krah" dbms="postgresql">
+        <addDefaultValue columnName="id" tableName="product" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+        <addDefaultValue columnName="id" tableName="product_technical_seo" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+        <addDefaultValue columnName="id" tableName="inventory_location" columnDataType="UUID" defaultValueComputed="uuid_generate_v4()" />
+    </changeSet>
+</databaseChangeLog>

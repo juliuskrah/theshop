@@ -1,0 +1,57 @@
+
+api-version: 2019-12-01
+location: westus2
+name: app-with-proxy
+properties:
+  containers:
+  - name: nginx
+    properties:
+      image: nginx:1.19
+      ports:
+      - port: 80
+        protocol: TCP
+      resources:
+        requests:
+          cpu: 1.0
+          memoryInGB: 1.0
+      volumeMounts:
+      - name: nginx-config
+        mountPath: /etc/nginx
+  - name: mvp
+    properties:
+      image: $IMAGE_TAG
+      ports:
+      - port: 8080
+        protocol: TCP
+      resources:
+        requests:
+          cpu: 1.0
+          memoryInGB: 1.0
+      environmentVariables:
+      - name: SPRING_DATASOURCE_URL
+        value: $AZURE_POSTGRESQL_URL
+      - name: SPRING_DATASOURCE_USERNAME
+        value: $AZURE_POSTGRESQL_USERNAME
+      - name: SPRING_DATASOURCE_PASSWORD
+        secureValue: '$AZURE_POSTGRESQL_PASSWORD'
+      - name: SHOPERAL_S3_AWS_ACCESS_KEY_ID
+        value: '$AWS_S3_ACCESS_KEY_ID'
+      - name: SHOPERAL_S3_AWS_SECRET_ACCESS_KEY
+        secureValue: '$AWS_S3_SECRET_ACCESS_KEY'
+  volumes:
+  - secret:
+      nginx.conf: dXNlciBuZ2lueDsKCndvcmtlcl9wcm9jZXNzZXMgYXV0bzsKCmV2ZW50cyB7CiAgd29ya2VyX2Nvbm5lY3Rpb25zIDEwMjQ7Cn0KCnBpZCAgICAgICAgL3Zhci9ydW4vbmdpbngucGlkOwoKaHR0cCB7CgogICAgc2VydmVyIHsKICAgICAgICBsaXN0ZW4gWzo6XTo4MDsKICAgICAgICBsaXN0ZW4gODA7CgogICAgICAgIHNlcnZlcl9uYW1lIGxvY2FsaG9zdDsKCiAgICAgICAgIyBVc2UgYSBoaWdoZXIga2VlcGFsaXZlIHRpbWVvdXQgdG8gcmVkdWNlIHRoZSBuZWVkIGZvciByZXBlYXRlZCBoYW5kc2hha2VzCiAgICAgICAga2VlcGFsaXZlX3RpbWVvdXQgMzAwOyAjIHVwIGZyb20gNzUgc2VjcyBkZWZhdWx0CgogICAgICAgIGxvY2F0aW9uIC8gewogICAgICAgICAgICBwcm94eV9wYXNzIGh0dHA6Ly9sb2NhbGhvc3Q6ODA4MDsKICAgICAgICAgICAgCiAgICAgICAgICAgIHByb3h5X3NldF9oZWFkZXIgQ29ubmVjdGlvbiAiIjsKICAgICAgICAgICAgcHJveHlfc2V0X2hlYWRlciBIb3N0ICRob3N0OwogICAgICAgICAgICBwcm94eV9zZXRfaGVhZGVyIFgtUmVhbC1JUCAkcmVtb3RlX2FkZHI7CiAgICAgICAgICAgIHByb3h5X3NldF9oZWFkZXIgWC1Gb3J3YXJkZWQtRm9yICRyZW1vdGVfYWRkcjsKICAgICAgICB9CiAgICB9Cn0=
+    name: nginx-config
+  imageRegistryCredentials: # Credentials to pull a private image
+  - server: $CI_REGISTRY
+    username: $CI_DEPLOY_USER
+    password: $CI_DEPLOY_PASSWORD
+  ipAddress:
+    ports:
+    - port: 80
+      protocol: TCP
+    type: Public
+    dnsNameLabel: shoperal
+  osType: Linux
+tags: null
+type: Microsoft.ContainerInstance/containerGroups
